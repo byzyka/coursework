@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <div class="main-content-hall-seanses">`;
                             seances.forEach(seance => {
                                 hallSeances += `<div>
-                                <a class="main-content-hall-time" href="../html/hall.html" data-film-name ="${film.film_name}" 
+                                <a class="main-content-hall-time" href="html/hall.html" data-film-name ="${film.film_name}" 
                                 data-seance-time="${seance.seance_time}" 
                                 data-hall-name="${hall.hall_name}" data-hall-id="${hall.id}" data-seance-id="${seance.id}" 
                                 data-hall-price-standart="${hall.hall_price_standart}"
