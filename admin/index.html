@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>coursework</title>
+
+    <link rel="stylesheet" href="../css/style-admin.css" />
+    <link href="../css/jquery.fancybox.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="content">
+        <div class="content-header">
+            <h1 class="content-header-title">Идём<span>в</span>кино</h1>
+            <div class="content-header-title-admin"> Администраторррская
+            </div>
+        </div>
+
+
+
+        <div class="main-content">
+            <div class="main-content-sections">
+                <section class="main-content-section">
+                    <div class="main-content-section-title">
+                        Управление залами
+                    </div>
+                    <div class="main-content-section-control-hall">
+                        <div class="main-content-section-control-hall-list"> Доступные залы:
+                            <div class="main-content-section-control-hall-item">Зал 1
+                                <button class="main-content-section-control-hall-item-del">
+                                </button>
+                            </div>
+                            <div class="main-content-section-control-hall-item">Зал 2
+                                <button class="main-content-section-control-hall-item-del">
+                                </button>
+                            </div>
+                        </div>
+                        <button data-fancybox href="#addHall" class="main-content-section-control-hall-btn-link">Создать
+                            зал</button>
+
+                    </div>
+
+                </section>
+
+                <section class="main-content-section">
+                    <div class="main-content-section-title">Конфигурация залов</div>
+                    <div class="main-content-section-configuration">
+                        <div class="main-content-section-configuration-hall"><span>Выберите зал для конфигурации:</span>
+                            <div class="main-content-section-configuration-list">
+                                <button class="main-content-section-configuration-item">Зал 1</button>
+                                <button class="main-content-section-configuration-item">Зал 2</button>
+                            </div>
+
+                        </div>
+
+                        <div class="main-content-section-configuration-place"><span>Укажите количество рядов и
+                                максимальное количество кресел в ряду:</span>
+                            <div class="main-content-section-configuration-place-list">
+                                <label class="main-content-section-configuration-place-item">
+                                    <span>Рядов, шт</span>
+                                    <input type="number" min="1"
+                                        class="main-content-section-configuration-place-item-input" id="row" name="text"
+                                        placeholder="10">
+                                </label>
+
+                                <label class="main-content-section-configuration-place-item">
+                                    <span>Мест, шт</span>
+                                    <input type="number" min="1"
+                                        class="main-content-section-configuration-place-item-input" id="place"
+                                        name="text" placeholder="8">
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="main-content-section-configuration-type"><span>Теперь вы можете указать типы кресел
+                                на схеме зала:</span>
+                            <div class="main-content-section-configuration-type-list">
+                                <div class="main-content-section-configuration-type-item-desc">
+                                    <div class="main-content-section-configuration-type-item standart">
+                                    </div>
+                                    <span> — обычные кресла </span>
+                                </div>
+                                <div class="main-content-section-configuration-type-item-desc">
+                                    <div class="main-content-section-configuration-type-item vip">
+                                    </div>
+                                    <span> — VIP кресла </span>
+                                </div>
+                                <div class="main-content-section-configuration-type-item-desc">
+                                    <div class="main-content-section-configuration-type-item disabled">
+                                    </div>
+                                    <span> — заблокированные (нет кресла) </span>
+                                </div>
+
+
+                            </div>
+                            <div class="main-content-section-configuration-type-descr">
+                                Чтобы изменить вид кресла, нажмите по нему
+                            </div>
+                            <div class="main-content-section-configuration-type-hall">
+                                <div class="main-content-section-configuration-type-hall-screen"> экран</div>
+                                <div class="main-content-section-configuration-type-hall-items">
+                                    <div class="main-content-section-configuration-type-hall-items-row">
+                                        <div class="main-content-section-configuration-type-item disabled"></div>
+                                        <div class="main-content-section-configuration-type-item standart"></div>
+                                        <div class="main-content-section-configuration-type-item vip"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="main-content-section-configuration-type-save">
+                                <button class="main-content-section-configuration-type-nosave-btn"
+                                    id="nosaveHall">Отмена</button>
+                                <button class="main-content-section-configuration-type-save-btn"
+                                    id="saveHall">Сохранить</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="main-content-section">
+                    <div class="main-content-section-title">Конфигурация цен</div>
+                    <div class="main-content-section-price-hall"> <span>Выберите зал для конфигурации:</span>
+                        <div class="main-content-section-price-hall-list">
+                            <div class="main-content-section-price-hall-item">Зал 1</div>
+                            <div class="main-content-section-price-hall-item">Зал 2</div>
+                        </div>
+
+                    </div>
+
+                    <div class="main-content-section-price-type"><span>Установите цены для типов кресел:</span>
+                        <div class="main-content-section-price-type-list">
+                            <div class="main-content-section-price-type-item">
+                                <label class="main-content-section-price-type-item-title"><span>Цена, рублей</span>
+                                    <input type="number" class="main-content-section-price-hall-item-input"
+                                        id="standartPrice" name="text" placeholder="0">
+                                </label>
+                                <div class="main-content-section-configuration-type-item-desc">
+
+                                    <span> за <div class="main-content-section-configuration-type-item standart">
+                                        </div> обычные кресла </span>
+                                </div>
+
+
+                            </div>
+                            <div class="main-content-section-price-type-item">
+                                <label class="main-content-section-price-type-item-title"><span>Цена, рублей</span>
+                                    <input type="number" class="main-content-section-price-hall-item-input"
+                                        id="vipPrice" name="text" placeholder="350">
+                                </label>
+                                <div class="main-content-section-configuration-type-item-desc">
+
+                                    <span> за <div class="main-content-section-configuration-type-item vip hall">
+                                        </div> VIP кресла </span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="main-content-section-configuration-type-save">
+                        <button class="main-content-section-configuration-type-nosave-btn"
+                            id="noSavePrice">Отмена</button>
+                        <button class="main-content-section-configuration-type-save-btn"
+                            id="savePrice">Сохранить</button>
+                    </div>
+
+                </section>
+
+                <section class="main-content-section">
+                    <div class="main-content-section-title">Сетка сеансов</div>
+                    <button data-fancybox href="#addMovie" class="main-content-section-sessions-add">Добавить фильм
+                    </button>
+
+                    <div class="main-content-section-sessions-list">
+                        <div class="main-content-section-sessions-item light-green">
+                            <div class="main-content-section-sessions-item-img">
+                                <img src="../img/poster.jpg" alt="poster">
+                            </div>
+                            <div class="main-content-section-sessions-item-descr">
+                                <div class="main-content-section-sessions-item-title">Звёздные войны XXIII: Атака
+                                    клонированных клонов</div>
+                                <div class="main-content-section-sessions-item-time">130 минут</div>
+                            </div>
+                            <div class="main-content-section-sessions-item-del">
+
+                            </div>
+                        </div>
+                        <div class="main-content-section-sessions-item green">
+                            <div class="main-content-section-sessions-item-img">
+                                <img src="../img/poster.jpg" alt="poster">
+                            </div>
+                            <div class="main-content-section-sessions-item-descr">
+                                <div class="main-content-section-sessions-item-title">Миссия выполнима</div>
+                                <div class="main-content-section-sessions-item-time">120 минут</div>
+                            </div>
+                            <div class="main-content-section-sessions-item-del">
+
+                            </div>
+                        </div>
+                        <div class="main-content-section-sessions-item turquoise">
+                            <div class="main-content-section-sessions-item-img">
+                                <img src="../img/poster.jpg" alt="poster">
+                            </div>
+                            <div class="main-content-section-sessions-item-descr">
+                                <div class="main-content-section-sessions-item-title">Серая пантера</div>
+                                <div class="main-content-section-sessions-item-time">90 минут</div>
+                                <div class="main-content-section-sessions-item-del">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="main-content-section-sessions-item blue">
+                            <div class="main-content-section-sessions-item-img">
+                                <img src="../img/poster.jpg" alt="poster">
+                            </div>
+                            <div class="main-content-section-sessions-item-descr">
+                                <div class="main-content-section-sessions-item-title">Движение вбок</div>
+                                <div class="main-content-section-sessions-item-time">95 минут</div>
+                            </div>
+                            <div class="main-content-section-sessions-item-del">
+
+                            </div>
+                        </div>
+                        <div class="main-content-section-sessions-item lilac">
+                            <div class="main-content-section-sessions-item-img">
+                                <img src="../img/poster.jpg" alt="poster">
+                            </div>
+                            <div class="main-content-section-sessions-item-descr">
+                                <div class="main-content-section-sessions-item-title">Кот Да Винчи</div>
+                                <div class="main-content-section-sessions-item-time">100 минут</div>
+                            </div>
+                            <div class="main-content-section-sessions-item-del">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="main-content-section-sessions-halls">
+                        <div class="main-content-section-sessions-hall"><span>Зал 1</span>
+
+                            <div class="main-content-section-sessions-hall-net" id="btn">
+
+
+                                <div class="main-content-section-sessions-hall-net-movie green">
+                                    Миссия выполнима
+                                    <div class="movie-time">00:00</div>
+                                </div>
+                                <div class="main-content-section-sessions-hall-net-movie green">Миссия
+                                    выполнима
+                                    <div class="movie-time">00:00</div>
+                                </div>
+                                <div class="main-content-section-sessions-hall-net-movie light-green">Звёздные
+                                    войны
+                                    <div class="movie-time">00:00</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="basket-delete"></div>
+
+                        <div class="main-content-section-sessions-hall"><span>Зал 2</span>
+                            <div class="main-content-section-sessions-hall-net">
+
+
+                                <div class="main-content-section-sessions-hall-net-movie green">Миссия
+                                    выполнима
+                                </div>
+                                <div class="main-content-section-sessions-hall-net-movie green">Миссия
+                                    выполнима
+                                </div>
+                                <div class="main-content-section-sessions-hall-net-movie light-green">Звёздные
+                                    войны
+                                </div>
+                            </div>
+                        </div>
+                        <div class="basket-delete"></div>
+                    </div>
+
+                    <div class="main-content-section-configuration-type-save">
+                        <button class="main-content-section-configuration-type-nosave-btn"
+                            id="noSaveSeance">Отмена</button>
+                        <button class="main-content-section-configuration-type-save-btn">Сохранить</button>
+                    </div>
+
+                </section>
+
+                <section class="main-content-section">
+                    <div class="main-content-section-title">Открыть продажи</div>
+
+                    <div class="main-content-section-price-hall open"> <span>Выберите зал для открытия/закрытия
+                            продаж:</span>
+                        <div class="main-content-section-price-hall-list open-hall-list">
+                            <button class="main-content-section-price-hall-item open-hall-item ">Зал 1</button>
+                            <button class="main-content-section-price-hall-item open-hall-item">Зал 2</button>
+                        </div>
+
+                    </div>
+
+                    <div class="main-content-section-open-descr"><span>Всё готово к открытию</span></div>
+
+                    <button class="main-content-section-open-btn" id="openHall">Открыть продажу билетов</button>
+                </section>
+            </div>
+        </div>
+
+        <section style="display: none" class="main-content-add display-none" id="addHall">
+            <div class="main-content-add-title">
+                <div class="main-content-add-title-text">Добавление зала</div>
+                <button data-fancybox-close class="main-content-add-title-img">
+                </button>
+
+
+            </div>
+            <div class="main-content-container">
+                <div class="main-content-add-list">
+                    <label class="main-content-add-item">
+                        <span>Название зала</span>
+                        <div class="main-content-add-item-hall">
+                            <input type="text" class="main-content-add-item-input" name="text" id="hall"
+                                placeholder="Например, «Зал 1»">
+                        </div>
+                    </label>
+                </div>
+
+                <div class="main-content-add-btns">
+                    <button class="main-content-add-btn">Добавить зал</button>
+                    <button data-fancybox-close class="main-content-add-btn cancel">Отменить</button>
+                </div>
+            </div>
+
+        </section>
+
+        <section style="display: none" class="main-content-add display-none" id="addMovie">
+            <div class="main-content-add-title">
+                <div class="main-content-add-title-text">Добавление фильма</div>
+                <button data-fancybox-close class="main-content-add-title-img">
+                </button>
+            </div>
+            <div class="main-content-container">
+                <form class="main-content-add-list" id="form">
+                    <label class="main-content-add-item">
+                        <span>Название фильма</span>
+                        <input type="text" class="main-content-add-item-input" name="filmName" value="" id="movieTitle"
+                            placeholder="Например, «Гражданин Кейн»" required="" />
+                    </label>
+
+                    <label class="main-content-add-item">
+                        <span>Продолжительность фильма (мин.)</span>
+                        <input type="text" class="main-content-add-item-input" id="movieDuration" name="filmDuration"
+                            placeholder="" required="">
+                    </label>
+
+                    <label class="main-content-add-item">
+                        <span>Описание фильма</span>
+                        <textarea class="main-content-add-item-textarea" name="filmDescription" placeholder=""
+                            required=""></textarea>
+                    </label>
+                    <label class="main-content-add-item">
+                        <span>Страна</span>
+                        <input type="text" class="main-content-add-item-input" id="movieCountry" name="filmOrigin"
+                            placeholder="" required="">
+                    </label>
+
+                    <div class="main-content-add-btns">
+                        <div data-fancybox-close class="main-content-add-btn" id="addFilm">Добавить фильм</div>
+                        <label class="main-content-add-btn" for="fileElem" id="imgAdd">Загрузить постер
+                            <input style="display:none" id="fileElem" type="file" name="filePoster" />
+                        </label>
+                        <button type="reset" class="main-content-add-btn cancel" id="cancelAddedFilm">Отменить</button>
+                    </div>
+
+                </form>
+
+
+            </div>
+
+        </section>
+
+        <section style="display: none" class="main-content-add display-none" id="addSeance">
+            <div class="main-content-add-title">
+                <div class="main-content-add-title-text">Добавление сеанса</div>
+                <button data-fancybox-close class="main-content-add-title-img">
+                </button>
+            </div>
+            <div class="main-content-container">
+                <div class="main-content-add-list">
+                    <label class="main-content-add-item">
+                        <span>Название зала</span>
+
+                        <input class="main-content-add-item-select" name="text" id="selectHall">
+                        <!--   <option class="main-content-add-item-option selected">Название зала</option>
+                            <option class="main-content-add-item-option">Зал 2</option>
+                            <option class="main-content-add-item-option">Зал 2</option> -->
+                        </input>
+
+
+                    </label>
+
+                    <label class="main-content-add-item">
+                        <span>Название фильма</span>
+                        <input class="main-content-add-item-select" name="text" id="selectFilm">
+                        <!--   <option class="main-content-add-item-option selected">Название фильма</option>
+                            <option class="main-content-add-item-option">Миссия выполнима</option>
+                            <option class="main-content-add-item-option">Звёздные войны XXIII: Атака
+                                клонированных клонов</option>
+                            <option class="main-content-add-item-option">Серая пантера</option>
+                            <option class="main-content-add-item-option">Кот Да Винчи</option>
+                            <option class="main-content-add-item-option">Движение вбок</option>-->
+                        </input>
+                    </label>
+
+                    <label class="main-content-add-item">
+                        <span>Время начала</span>
+                        <div class="main-content-add-item-time">
+                            <input type="time" class="main-content-add-item-input" id="movieStart" name="text"
+                                min="00:00" max="23:59" required>
+
+                        </div>
+                    </label>
+                </div>
+
+                <div class="main-content-add-btns">
+                    <div class="main-content-add-btn" id="seanceAdded">Добавить сеанс</div>
+                    <div class="main-content-add-btn cancel" id="cancelSeanse">Отменить</div>
+                </div>
+            </div>
+
+        </section>
+
+        <section style="display: none" class="main-content-add display-none" id="specifyMovie">
+            <div class="main-content-add-title">
+                <div class="main-content-add-title-text"></div>
+                <button data-fancybox-close class="main-content-add-title-img">
+                </button>
+            </div>
+            <div class="main-content-container">
+                <div class="main-content-add-list">
+                    <label class="main-content-add-item">
+                        <span></span>
+                        <div class="main-content-add-item-hall" id="cancelFilm">
+                            Вы действительно хотите снять с сеанса фильм "Название(год)"?
+                        </div>
+                    </label>
+                </div>
+
+                <div class="main-content-add-btns">
+                    <button class="main-content-add-btn" id="MovieDel">Удалить</button>
+                    <button data-fancybox-close class="main-content-add-btn cancel" id="cancelRemove">Отменить</button>
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/jquery.fancybox.js"></script>
+    <script src="../js/add.js"></script>
+    <script src="../js/index-admin.js"></script>
+
+</body>
+
+</html>
