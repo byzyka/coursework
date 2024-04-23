@@ -25,7 +25,7 @@
             <div class="main-content-sections">
                 <section class="main-content-section">
                     <div class="main-content-section-title">
-                        Управление залами
+                        <span>Управление залами</span>
                     </div>
                     <div class="main-content-section-control-hall">
                         <div class="main-content-section-control-hall-list"> Доступные залы:
@@ -46,7 +46,7 @@
                 </section>
 
                 <section class="main-content-section">
-                    <div class="main-content-section-title">Конфигурация залов</div>
+                    <div class="main-content-section-title"><span>Конфигурация залов</span></div>
                     <div class="main-content-section-configuration">
                         <div class="main-content-section-configuration-hall"><span>Выберите зал для конфигурации:</span>
                             <div class="main-content-section-configuration-list">
@@ -109,18 +109,19 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="main-content-section-configuration-type-save">
+                          <div class="main-content-section-configuration-type-save">
                                 <button class="main-content-section-configuration-type-nosave-btn"
                                     id="nosaveHall">Отмена</button>
                                 <button class="main-content-section-configuration-type-save-btn"
                                     id="saveHall">Сохранить</button>
                             </div>
+                        
                         </div>
                     </div>
                 </section>
 
                 <section class="main-content-section">
-                    <div class="main-content-section-title">Конфигурация цен</div>
+                    <div class="main-content-section-title"><span>Конфигурация цен</span></div>
                     <div class="main-content-section-price-hall"> <span>Выберите зал для конфигурации:</span>
                         <div class="main-content-section-price-hall-list">
                             <div class="main-content-section-price-hall-item">Зал 1</div>
@@ -157,19 +158,19 @@
 
                             </div>
                         </div>
-
+                        <div class="main-content-section-configuration-type-save">
+                            <button class="main-content-section-configuration-type-nosave-btn"
+                                id="noSavePrice">Отмена</button>
+                            <button class="main-content-section-configuration-type-save-btn"
+                                id="savePrice">Сохранить</button>
+                        </div>
                     </div>
-                    <div class="main-content-section-configuration-type-save">
-                        <button class="main-content-section-configuration-type-nosave-btn"
-                            id="noSavePrice">Отмена</button>
-                        <button class="main-content-section-configuration-type-save-btn"
-                            id="savePrice">Сохранить</button>
-                    </div>
+                    
 
                 </section>
 
                 <section class="main-content-section">
-                    <div class="main-content-section-title">Сетка сеансов</div>
+                    <div class="main-content-section-title"><span>Сетка сеансов</span></div>
                     <button data-fancybox href="#addMovie" class="main-content-section-sessions-add">Добавить фильм
                     </button>
 
@@ -277,16 +278,16 @@
                         <div class="basket-delete"></div>
                     </div>
 
-                    <div class="main-content-section-configuration-type-save">
+                  <!--  <div class="main-content-section-configuration-type-save">
                         <button class="main-content-section-configuration-type-nosave-btn"
                             id="noSaveSeance">Отмена</button>
                         <button class="main-content-section-configuration-type-save-btn">Сохранить</button>
                     </div>
-
+-->
                 </section>
 
                 <section class="main-content-section">
-                    <div class="main-content-section-title">Открыть продажи</div>
+                    <div class="main-content-section-title"><span>Открыть продажи</span></div>
 
                     <div class="main-content-section-price-hall open"> <span>Выберите зал для открытия/закрытия
                             продаж:</span>
@@ -458,6 +459,7 @@
     <script src="../js/jquery.fancybox.js"></script>
     <script src="../js/add.js"></script>
     <script src="../js/index-admin.js"></script>
+   
 
 </body>
 

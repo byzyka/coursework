@@ -98,7 +98,9 @@ body {
 }
 .content-header {
     width: 212px;
-    margin: 20px;
+    margin-top: 20px;
+    margin-bottom: 14px;
+    margin-left: 14px;
     color: rgba(255, 255, 255, 1);
     text-transform: uppercase;
 
@@ -127,7 +129,7 @@ body {
 .main-content-form {
     width: 390px;
     background-color: rgba(234, 233, 235, 0.95);
-    padding-bottom: 35px;
+    padding-bottom: 26px;
    
 
 }
@@ -147,7 +149,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-    padding: 35px 59px;
+    padding: 35px 59px 14px;
     
 }
 
@@ -209,6 +211,7 @@ body {
     padding: 12px;
     text-transform: uppercase;
     margin: 0 auto;
+    margin-bottom: 10px;
 }
 .success {
     display: none;
@@ -226,6 +229,8 @@ body {
 
     body {
         background-image: url(../img/login-tablet.jpg);
+        background-size: contain;
+        min-height: 415px;
        }
 
     .content {
@@ -233,6 +238,12 @@ body {
     width: 768px;
     
     }
+
+    .content-header{
+        margin-left: 14px;
+        margin-bottom: 14px;
+    }
+
     .main-content {
         width: 480px;
         margin: 0 auto;
@@ -240,6 +251,10 @@ body {
 
     .main-content-form {
         width: 480px;
+        
+    }
+    .main-content-form-group {
+        padding: 35px 105px 14px;
         
     }
 }
@@ -250,7 +265,10 @@ body {
         .content {
             width: 972px;
         }
-
+        .content-header{
+            margin-bottom: 35px;
+            margin-left: 104px;
+        }
         .main-content {
             width: 480px;
             margin: 0 auto;
@@ -260,4 +278,8 @@ body {
             width: 480px;
             
         }    
+        .main-content-form-group {
+            padding: 35px 105px 14px;
+            
+        }
     }

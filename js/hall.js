@@ -56,6 +56,7 @@ createRequest(
 
     if (response) {
       parsedSeances.hallConfig = response;
+     
     } else {
       console.log("Нет купленных билетов");
     }
@@ -65,7 +66,7 @@ createRequest(
     let newHall = "";
 
     parsedSeances.configHall.forEach((row) => {
-      //console.log(row);
+      console.log(row);
       newHall += `<div class="main-content-buying-hall-scheme-items-row">`;
       row.forEach((item) => {
         if (item == "disabled") {

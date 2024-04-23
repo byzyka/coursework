@@ -167,7 +167,7 @@ body.compensate-for-scrollbar {
 }
 
 .fancybox-content {
-background-image: url(/admin/img/login-mobile.jpg);
+background-image: url(../img/login-mobile.jpg);
 background-size: cover;
 height: 100%;
     display: inline-block;
@@ -183,7 +183,7 @@ height: 100%;
 
 @media(min-width: 768px) and (max-width: 1599px) {
     .fancybox-content {
-        background-image: url(/admin/img/login-tablet.jpg);
+        background-image: url(../img/login-tablet.jpg);
         background-size: cover;
         height: 100%;
         min-width: 100%;
@@ -197,7 +197,7 @@ height: 100%;
 
 @media(min-width: 1600px) {
     .fancybox-content {
-        background-image: url(/admin/img/login-desktop.jpg);
+        background-image: url(../img/login-desktop.jpg);
         background-size: cover;
         height: 100%;
         min-width: 100%;

@@ -91,10 +91,11 @@ function updateHall() {
 
 let saveBtn = document.getElementById("saveHall");
 saveBtn.addEventListener("click", (e) => {
+  
   e.preventDefault();
   //выбранный зал
   let activeHall = document.querySelector(".main-content-section-configuration-item.active");
-
+  
   // console.log(activeHall);
   if (activeHall == null) {
     alert("Не выбран зал!");
@@ -119,6 +120,7 @@ saveBtn.addEventListener("click", (e) => {
 
     let rowChair = [];
     configChairs.forEach((chair) => {
+      
       rowChair.push(chair.getAttribute("data-type-title"));
 
     });
@@ -170,6 +172,10 @@ configList.addEventListener("change", (e) => {
 
   schemeItems.innerHTML = newRow;
 
+  chairsClick();
+});
+
+function chairsClick() {
   /*обработчик клика по креслу*/
   let chairTypes = ["standart", "vip", "disabled"];
   let allChairs = document.querySelectorAll(".main-content-section-configuration-type-item");
@@ -189,7 +195,8 @@ configList.addEventListener("change", (e) => {
       selectedChair.setAttribute("data-type-title", chairTypes[chairDataId]);
     });
   });
-});
+}
+
 //записали имя и id в зал
 function updateaddHalls() {
   fetch("https://shfe-diplom.neto-server.ru/alldata", {})
@@ -198,9 +205,12 @@ function updateaddHalls() {
       let configHall = document.querySelector(".main-content-section-configuration-list");
 
       configHall.innerHTML = "";
-
-      data.result.halls.forEach((hall) => {
-        configHall.innerHTML += `<button class="main-content-section-configuration-item" data-hall-id=${hall.id}>${hall.hall_name}</button>`;
+      let classActive = 'active';
+      data.result.halls.forEach((hall, i) => {
+        if(i !== 0){
+          classActive = "";
+        }
+        configHall.innerHTML += `<button class="main-content-section-configuration-item ${classActive}" data-hall-index="${i}" data-hall-id="${hall.id}">${hall.hall_name}</button>`;
       });
 
       // Выбрали зал
@@ -212,15 +222,104 @@ function updateaddHalls() {
           let selectedHall = document.querySelector(".active");
           if (selectedHall) {
             selectedHall.classList.remove("active");
-          }
+          } 
           btn.classList.add("active");
+         // console.log(data);
+          //console.log(e.target.getAttribute('data-hall-index'));
+          updateInputHall(e.target.getAttribute('data-hall-index'));
         });
       });
     });
 }
+updateInputHall();
+
+function updateInputHall(indexHall = 0){
+   fetch("https://shfe-diplom.neto-server.ru/alldata", {})
+    .then((response) => response.json())
+    .then((data) => {
+    //console.log(data.result.halls);
+    let arrConfig = []; 
+    let schemeHall = document.querySelector('.main-content-section-configuration-type-hall-items');
+    //console.log(schemeHall);
+    let newHall = "";
+   // console.log(indexHall);
+   schemeHall.innerHTML = "";
+     data.result.halls.forEach((hall, i) => {
+      if(indexHall == i) {
+
+        arrConfig.push(hall.hall_config);
+
+        let row = document.getElementById('row');
+        row.value = hall.hall_config.length;
+        let place = document.getElementById('place');
+        place.value = hall.hall_config[0].length;
+       
+        arrConfig.forEach((row) => {
+       // console.log(row);
+        newHall ="";
+        
+          row.forEach((items) => {
+            newHall += `<div class="main-content-section-configuration-type-hall-items-row">`;
+            items.forEach(item => {
+              //console.log(item);
+              if (item == "standart") { 
+                newHall += `<div class="main-content-section-configuration-type-item standart" data-type-title="standart" data-type="0"></div>`;
+              } else if (item == "vip") {
+                newHall += `<div class="main-content-section-configuration-type-item vip" data-type-title="vip" data-type="1"></div>`;
+              } else if (item == "disabled") {
+                newHall += `<div class="main-content-section-configuration-type-item disabled"></div>`;
+              }        
+            });
+            newHall += `</div>`;
+          })
+        });
+        schemeHall.innerHTML = newHall;
+
+        chairsClick();
+      } 
+    
+      })
+    })
+    
+}
 
 updatePriceHalls();
+updateInputPriceHall();
 
+function updateInputPriceHall(indexHall = 0){
+  fetch("https://shfe-diplom.neto-server.ru/alldata", {})
+    .then((response) => response.json())
+    .then((data) => {
+      
+    //  console.log(indexHall);
+      let arrStandartPrice = [];
+      let arrVipPrice = [];
+      let standartPrice = document.getElementById('standartPrice');
+      let vipPrice = document.getElementById('vipPrice');
+      data.result.halls.forEach(hall =>{
+      //  console.log(hall);
+       // if(indexHall !== i)
+      arrStandartPrice.push(hall.hall_price_standart);
+      //console.log(arrStandartPrice); 
+      
+
+      arrStandartPrice.forEach((standart, i) =>{
+        if(indexHall == i){
+          standartPrice.value = standart;
+        }
+      })
+
+      arrVipPrice.push(hall.hall_price_vip)
+     
+      arrVipPrice.forEach((vip, i) => {
+        if(indexHall == i){
+          vipPrice.value = vip;
+        }})
+      
+
+      })
+    })
+}
 //изменение цен в залах
 
 function updatePriceHalls() {
@@ -228,27 +327,32 @@ function updatePriceHalls() {
     .then((response) => response.json())
     .then((data) => {
       updateHall();
-
+      
       //console.log(data);
       let configHall = document.querySelector(".main-content-section-price-hall-list");
 
       configHall.innerHTML = "";
-
-      data.result.halls.forEach((hall) => {
-        configHall.innerHTML += `<button class="main-content-section-price-hall-item" data-hall-id=${hall.id}>${hall.hall_name}</button>`;
+      let activeClass = 'active';
+      data.result.halls.forEach((hall, i) => {
+        if(i !== 0){
+          activeClass = '';
+        }
+        configHall.innerHTML += `<button class="main-content-section-price-hall-item ${activeClass}" data-hall-index="${i}" data-hall-id="${hall.id}">${hall.hall_name}</button>`;
       });
 
       // Выбрали зал
       let hallBtns = document.querySelectorAll(".main-content-section-price-hall-item");
 
-      hallBtns.forEach((btn) => {
+      hallBtns.forEach(btn => {
         btn.addEventListener("click", (e) => {
           e.preventDefault();
-          let selectedHall = document.querySelector(".active");
+          let selectedHall = document.querySelector(".main-content-section-price-hall-item.active");
           if (selectedHall) {
             selectedHall.classList.remove("active");
           }
           btn.classList.add("active");
+         updateInputPriceHall(e.target.getAttribute('data-hall-index'));
+          
         });
       });
     });
@@ -395,6 +499,43 @@ function addFilms() {
 scalePaint();
 
 //рисуем сетку с фильмами
+
+function convertH2M(timeInHour){
+  let timeParts = timeInHour.split(":");
+  return Number(timeParts[0]) * 60 + Number(timeParts[1]);
+}
+TimeLine();
+
+function TimeLine(){
+fetch("https://shfe-diplom.neto-server.ru/alldata", {})
+  .then((response) => response.json())
+  .then((data) => {
+
+const items = document.querySelectorAll('.main-content-section-sessions-item-prev');
+//console.log(items);
+
+const timeline = document.querySelector('.main-content-section-sessions-hall-net');
+//console.log(timeline);
+
+let timelineWidth = timeline.getBoundingClientRect().width;
+console.log(timelineWidth);
+
+let step = timelineWidth / 1439;
+//console.log(step2);
+//конвертация данного времени в минуты
+
+items.forEach(item => {
+ // console.log(item);
+  let time = item.querySelector('.movie-time').textContent;
+         
+  let timeInMinutes = convertH2M(time);
+         
+ item.style.left = step * timeInMinutes + 'px';
+
+})
+})   
+}    
+
 function scalePaint() {
   let hallSeance = document.querySelector(".main-content-section-sessions-halls");
   //console.log(hallSeance);
@@ -402,8 +543,8 @@ function scalePaint() {
   fetch("https://shfe-diplom.neto-server.ru/alldata", {})
     .then((response) => response.json())
     .then((data) => {
-
-      console.log()
+      TimeLine();
+    
       let scaleFilms = "";
       hallSeance.innerHTML = "";
 
@@ -513,8 +654,8 @@ function scalePaint() {
         });
       });
 
-      let resetBtn = document.getElementById("noSaveSeance");
-      resetBtn.addEventListener("click", () => document.location.reload());
+      //let resetBtn = document.getElementById("noSaveSeance");
+      //resetBtn.addEventListener("click", () => document.location.reload());
     });
 
 }
@@ -528,7 +669,7 @@ let selectFilm = document.getElementById("selectFilm");
 
 addSeance.addEventListener("click", (e) => {
   //let filmID = selectFilm.getAttribute('data-film-id');
-
+  
   let movieStart = document.getElementById("movieStart");
 
 
@@ -573,6 +714,9 @@ addSeance.addEventListener("click", (e) => {
 });
 
 seanceDel();
+
+
+
 function seanceDel() {
   fetch("https://shfe-diplom.neto-server.ru/alldata", {})
     .then((response) => response.json())
@@ -695,9 +839,12 @@ function openHall() {
       let list = document.querySelector(".open-hall-list");
       // console.log(list)
       list.innerHTML = "";
-
-      data.result.halls.forEach((hall) => {
-        list.innerHTML += `<button class="main-content-section-price-hall-item open-hall-item" data-hall-id=${hall.id}>${hall.hall_name}</button>`;
+      let activeClassBtn = 'active';
+      data.result.halls.forEach((hall, i) => {
+        if(i !== 0) {
+          activeClassBtn = '';
+        }
+        list.innerHTML += `<button class="main-content-section-price-hall-item open-hall-item ${activeClassBtn}" data-hall-id=${hall.id}>${hall.hall_name}</button>`;
       });
 
       // Выбрали зал
@@ -706,7 +853,7 @@ function openHall() {
       hallBtns.forEach((btn) => {
         btn.addEventListener("click", (e) => {
           e.preventDefault();
-          let selectedHall = document.querySelector(".active");
+          let selectedHall = document.querySelector(".open-hall-item.active");
           if (selectedHall) {
             selectedHall.classList.remove("active");
           }
@@ -745,3 +892,13 @@ function openHall() {
 
     });
 }
+
+let allBattons = document.querySelectorAll('.main-content-add-title-img');
+
+allBattons.forEach(button => {
+  button.addEventListener('click', e => {
+  e.preventDefault();
+  $.fancybox.close();
+  document.location.reload();
+})
+});

@@ -480,7 +480,8 @@ color: rgba(255, 0, 0, 1);
     }
     .content-nav-week {
         width: 100%;
-        padding: 0 150px;
+        padding: 0 127px;
+        margin-bottom: 30px;
     }
     .owl-carousel.owl-theme.content-nav-week{
         width: 736px;

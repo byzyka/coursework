@@ -187,7 +187,6 @@ body {
 .main-content-section {
     background-color: rgba(234, 233, 235, 0.95);
     padding-bottom: 30px;
-
 }
 
 .main-content-section-title {
@@ -195,14 +194,16 @@ body {
     background-color: rgba(99, 83, 108, 1);
     color: rgba(255, 255, 255, 1);
     padding: 20px;
-    text-align: center;
+    padding-left: 67px;
+   /* text-align: center;*/
     font-size: 22px;
     font-weight: 700;
     text-transform: uppercase;
     position: relative;
-    margin-bottom: 37px;
+    margin-bottom: 35px;
     min-width: 320px;
 }
+
 
 .main-content-section-title::before {
     content: url('../img/list-before.png');
@@ -210,7 +211,7 @@ body {
     height: 22px;
     position: absolute;
     top: 18px;
-    left: 6px;
+    left: 22px;
 
 }
 
@@ -220,17 +221,17 @@ body {
     height: 16px;
     position: absolute;
     top: 18px;
-    right: 6px;
+    right: 20px;
 }
 
 .main-content-section-control-hall {
-    padding: 20px;
+   padding-left: 31px;
 }
 
 .main-content-section-control-hall-list {
     font-size: 18px;
     font-weight: 400;
-    margin-bottom: 22px;
+    margin-bottom: 21px;
 }
 
 .main-content-section-control-hall-item {
@@ -275,12 +276,13 @@ body {
     font-size: 16px;
     padding: 12px;
     text-transform: uppercase;
-    margin: 0 auto 30px;
+    margin: 0 auto;
     box-shadow: 0 3px 3px rgba(0, 0, 0, 0.24);
+    /*margin-bottom: 18px;*/
 }
 
 .main-content-section-configuration {
-    padding: 20px;
+    padding: 0 20px;
 
 }
 
@@ -288,6 +290,7 @@ body {
     font-size: 16px;
     font-weight: 400;
     margin-bottom: 36px;
+    margin-left: 13px;
 
 }
 
@@ -335,12 +338,13 @@ body {
     font-size: 16px;
     font-weight: 400;
     margin-bottom: 36px;
+    margin-left: 13px;
 
 }
 
 .main-content-section-configuration-place span {
     display: block;
-    margin-bottom: 12px;
+    margin-bottom: 6px;
 
 
 }
@@ -390,7 +394,7 @@ body {
     display: block;
     font-size: 16px;
     font-weight: 400;
-    margin-bottom: 11px;
+    margin-bottom: 16px;
 }
 
 .main-content-section-configuration-type-list {
@@ -398,6 +402,7 @@ body {
     flex-wrap: wrap;
     width: 100%;
     margin-bottom: 11px;
+    margin-left: 13px;
 }
 
 .main-content-section-configuration-type-item-desc {
@@ -460,8 +465,8 @@ body {
     font-size: 16px;
     font-weight: 400;
     text-transform: uppercase;
-    letter-spacing: 15px;
     text-align: center;
+    letter-spacing: 18px;
 }
 
 .main-content-buying-hall-scheme-items-row {
@@ -488,19 +493,14 @@ body {
     margin-right: 8px;
     width: 26px;
     height: 26px;
-
-
-
 }
-
-
-
 .main-content-section-configuration-type-save {
     width: 282px;
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
-    margin: 0 auto 20px;
+    margin: 0 auto;
+   /* margin-bottom: 11px;*/
 }
 
 .main-content-section-configuration-type-nosave-btn {
@@ -538,11 +538,13 @@ body {
 .main-content-section-price-hall {
     font-size: 16px;
     font-weight: 400;
-    margin-bottom: 36px;
+    margin-bottom: 22px;
     padding-left: 30px;
-
+    padding-right: 5px;
+   }
+.main-content-section-price-hall.open {
+    padding-right: 5px;
 }
-
 .main-content-section-price-hall span {
     display: block;
     margin-bottom: 12px;
@@ -553,6 +555,7 @@ body {
     flex-wrap: wrap;
     align-items: center;
     text-transform: uppercase;
+    margin-top: 25px;
 }
 
 .main-content-section-price-hall-item {
@@ -579,8 +582,8 @@ body {
 }
 
 .main-content-section-price-type {
-    padding: 20px;
-    margin-bottom: 12px;
+    padding: 0 20px;
+    /*margin-bottom: 12px;*/
 }
 
 .main-content-section-price-type span {
@@ -652,12 +655,14 @@ body {
     font-size: 14px;
     padding: 12px;
     text-transform: uppercase;
-    margin-left: 20px;
+    margin-left: 31px;
+    margin-top: 52px;
+    margin-bottom: 27px;
     box-shadow: 0 3px 3px rgba(0, 0, 0, 0.24);
 }
 
 .main-content-section-sessions-list {
-    padding: 20px;
+    padding: 15px 31px;
     display: flex;
     flex-wrap: wrap;
     min-width: 320px;
@@ -667,7 +672,7 @@ body {
 .main-content-section-sessions-item {
     display: flex;
     flex-wrap: nowrap;
-    /*width: 260px;*/
+    min-width: 259px;
     font-size: 14px;
     border: 1px solid rgba(0, 0, 0, 0.3);
     /*cursor: move;*/
@@ -734,10 +739,12 @@ body {
 
 .main-content-section-sessions-item-del {
     position: absolute;
-    top: 31px;
-    right: -2px;
-    width: 20px;
-    height: 20px;
+    top: 26px;
+    right: -1px;
+    width: 24px;
+    height: 24px;
+    padding: 3px;
+    background-color: rgba(255, 255, 255, 1);
     background-image: url(../img/item-after.png);
     background-repeat: no-repeat;
     background-size: cover;
@@ -748,31 +755,32 @@ body {
 }
 
 .main-content-section-sessions-halls {
-    padding: 20px
+    padding: 5px;
+    margin-left: 31px;
+    /*margin-right: 42px;*/
 }
 
 .main-content-section-sessions-hall {
     position: relative;
     margin-bottom: 30px;
+   
 
 }
 
 .basket-delete {
     position: absolute;
-    top: 21px;
-    left: -14px;
+    top: 17px;
+    left: -58px;
     height: 60px;
     width: 47px;
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 3px;
+    
 }
 
 .basket-delete.hover {
-
     background-image: url(../img/icon.png);
-
-
 }
 
 .main-content-section-sessions-hall span {
@@ -783,33 +791,48 @@ body {
 }
 
 .main-content-section-sessions-hall-net {
+    position: relative;
     min-height: 60px;
     padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
     display: flex;
     flex-wrap: wrap;
-    min-width: 280px;
+    min-width: 240px;
     border: 2px solid rgba(132, 132, 132, 1);
 
 }
 
 .main-content-section-sessions-item-prev {
-    display: flex;
-    flex-wrap: nowrap;
+    position: absolute;
     height: 40px;
-    /*width: 260px;*/
+    max-width: 50px;
     font-size: 14px;
     margin-right: 10px;
-    position: relative;
     font-weight: 700;
 
+}
+.main-content-section-sessions-item-prev:last-child {
+    margin-right: 0;
+    
+}
+
+.main-content-section-sessions-item-prev {
+    margin-bottom: 10px;
 }
 
 @media (max-width: 767px) {
     .main-content-section-sessions-item-prev {
-        margin-bottom: 40px;
+        margin-bottom: 10px;
     }
+    .basket-delete {
+        position: absolute;
+        top: 27px;
+        left: -36px;
+        height: 44px;
+        width: 35px;
 }
-
+}
 .main-content-section-sessions-item-prev:nth-child(n+1) {
     background-color: rgba(202, 255, 133, 1);
 }
@@ -838,8 +861,10 @@ body {
     border: 1px solid rgba(0, 0, 0, 0.3);
     font-weight: 400;
     font-size: 10px;
-    padding: 10px;
+    padding: 10px 3px;
     position: relative;
+    word-wrap: break-word;
+    overflow: hidden;
 
 }
 
@@ -881,6 +906,7 @@ body {
 
 .main-content-section-price-hall.open {
     min-width: 300px;
+    
 }
 
 .main-content-section-open-descr {
@@ -913,16 +939,17 @@ body {
     box-shadow: 0 3px 3px rgba(0, 0, 0, 0.24);
 }
 
+
 @media (min-width: 768px) and (max-width: 1599px) {
     body {
         background-image: url(../img/add-index-tablet.jpg);
     }
 
-    .content {
+.content {
         width: 100%;
         margin: 0 auto;
     }
-
+   
     .main-content {
         width: 100%;
     }
@@ -930,12 +957,21 @@ body {
     .content-header {
         margin: 35px 104px;
     }
-
+  
     .main-content-section-title {
         padding: 35px;
-
+        text-align: left;
     }
 
+    .main-content-section-control-hall-btn-link {
+       
+        margin-left: 0;
+    }
+    
+    .main-content-section:last-child {
+        padding-bottom: 0;
+    }
+    
     .main-content-section-title::before {
         content: url(../img/list-before-tablet.png);
         width: 44px;
@@ -949,12 +985,15 @@ body {
         top: 33px;
         right: 40px;
     }
-
+    
     .main-content-section-control-hall {
         padding-left: 80px;
 
     }
-
+    .main-content-section-control-hall-list {
+        margin-bottom: 8px;
+    }
+    
     .main-content-section-configuration {
         padding-left: 80px;
     }
@@ -974,13 +1013,12 @@ body {
     }
 
     .main-content-section-price-hall.open {
-        padding-left: 80px;
+        padding-left: 104px;
+        margin-bottom: 40px;
     }
-
-    .main-content-section-price-hall.open {
-        padding-left: 80px;
+    .main-content-section-price-hall span {
+        margin-bottom: 24px;
     }
-
     .main-content-section-sessions-halls {
         padding-left: 80px;
     }
@@ -1020,7 +1058,7 @@ body {
     }
 
     .main-content-section-sessions-hall-net {
-        width: 100%;
+        width: 552px;
     }
 
 }
@@ -1029,7 +1067,37 @@ body {
     body {
         background-image: url(../img/add-index-desktop.jpg);
     }
+    .main-content-section {
+        padding-bottom: 35px;
+    }
 
+    .main-content-section:last-child {
+        padding-bottom: 0;
+    }
+    .main-content-section-control-hall-btn-link {
+        margin-left: 0;
+    }
+    .main-content-section-configuration-type-save {
+        width: 282px;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        margin-left: 267px;
+        margin-bottom: 11px;
+    }
+
+    .main-content-section-sessions-list {
+        padding: 15px 24px;
+        display: flex;
+        flex-wrap: wrap;
+        min-width: 791px;
+    }
+
+    .main-content-section-sessions-halls {
+        padding: 5px;
+        margin-left: 139px;
+        margin-right: 42px; 
+    }
     .content {
         width: 962px;
         margin: 0 auto;
@@ -1039,8 +1107,32 @@ body {
         margin: 35px 104px;
     }
 
+
+    .main-content-section {
+        position:relative;
+    }
+    .main-content-section::before {
+        content: "";
+        display: block;
+        width: 3px;
+        height: 100%;
+        position: absolute;
+        background-color: rgba(188, 149, 214, 1);
+        left: 61px;
+        top: 25px;
+        z-index: 1;
+
+    }
+    
+    .main-content-section:last-child:before {
+        background-color: rgba(214, 149, 149, 0);
+    }
+   
+    
     .main-content-section-title {
         padding: 35px;
+        padding-left: 104px;
+        text-align: left;
     }
 
     .main-content-section-title::before {
@@ -1050,6 +1142,7 @@ body {
         position: absolute;
         top: 23px;
         left: 40px;
+        z-index: 15;
     }
 
     .main-content-section-title::after {
@@ -1058,31 +1151,35 @@ body {
     }
 
     .main-content-section-configuration-type-hall {
-        margin: 0 auto 20px;
+        margin: 0 auto 28px;
         width: 826px;
     }
 
     .main-content-section-control-hall {
-        padding-left: 80px;
+        padding-left: 104px;
 
     }
 
     .main-content-section-configuration {
-        padding: 60px;
+        padding-top: 3px;
+        padding-left: 104px;
     }
 
     .main-content-section-price-hall {
 
-        padding-left: 60px;
+        padding-left: 99px;
     }
 
     .main-content-section-price-type {
-        padding-left: 60px;
+        padding-left: 99px;
+        padding-bottom: 3px;
     }
 
     .main-content-section-sessions-add {
-        display: flex;
-        margin-left: 100px;
+       /* display: flex;*/
+        margin-left: 104px;
+        margin-top: 48px;
+
     }
 
     .main-content-section-price-type-item {
@@ -1090,7 +1187,7 @@ body {
     }
 
     .main-content-section-sessions-list {
-        width: 607px;
+      
     }
 
     .main-content-section-sessions-item:nth-child(n+2) {
@@ -1108,11 +1205,14 @@ body {
     }
 
     .main-content-section-sessions-hall {
-        padding-left: 40px;
-    }
+       /* padding-left: 40px;*/
+        max-width: 720px;
+            }
 
     .main-content-section-price-hall.open {
-        padding-left: 80px;
+        padding-left: 100px;
+        padding-right: 20px;
+      
     }
 
 }
@@ -1286,6 +1386,23 @@ body {
 
     .main-content-add {
         margin: 0 auto;
+    }
+
+    
+    .main-content-section {
+        position:relative;
+    }
+    .main-content-section::before {
+        content: "";
+        display: block;
+        width: 3px;
+        height: 100%;
+        position: absolute;
+        background-color: rgba(188, 149, 214, 1);
+        left: 61px;
+        top: 25px;
+        z-index: 1;
+
     }
 
     .main-content-add-btns {
@@ -1484,6 +1601,11 @@ body {
     .main-content-add-btn.cancel {
         margin-right: 0;
     }
+    .main-content-section-sessions-halls {
+        padding: 20px;
+        margin-left: 113px;
+        margin-right: 42px;
+    }
 }
 
 @media (min-width: 1599px) {
@@ -1665,16 +1787,108 @@ body {
     body {
         background-image: url(../img/login-tablet.jpg);
     }
-
-    .main-content {
-        width: 768px;
-        margin: 50px auto;
+    .content-header-title {
+        
+        margin-bottom: 3px;
+    }
+    .main-content-section-sessions-halls {
+        padding: 20px;
+        margin-left: 113px;
+        margin-right: 42px;
+    }
+    .main-content-section-title {
+        padding: 35px;
+        padding-left: 104px;
+       /* margin-bottom: 5px;*/
+    }
+    .main-content-section-control-hall {
+        padding-left: 104px;
     }
 
+    .main-content-section-control-hall-btn-link {
+        font-size: 14px;
+    }
+    .main-content-section-control-hall-list {
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+    .main-content {
+        width: 768px;
+        margin: 30px auto;
+    }
+    .main-content-section {
+        padding-bottom: 35px;
+    }
+    .main-content-section-price-hall-list {
+        margin-top: 15px;
+    }
+    .main-content-section-sessions-add {
+        margin-top: 51px;
+        margin-left: 104px;
+        margin-bottom: 14px;
+    }
+
+    .main-content-section-sessions-list {
+        margin-left: 102px;
+    }
+    .main-content-section-sessions-add {
+        display: flex;
+        justify-content: center          
+    }
+    .main-content-section-configuration {
+        padding-left: 104px;
+    }
+    .main-content-section-sessions-item {
+        margin-bottom: 12px;
+    }
+    .main-content-section-sessions-list {
+        padding: 2px;
+    }
+    .main-content-section-sessions-halls {
+        padding: 0 25px;
+    }
+    .main-content-section::before {
+       z-index: 2;
+    }
+    .main-content-section-title::before {
+        z-index: 3;
+    }
     .main-content-add {
         background-color: rgba(234, 233, 235, 0.95);
         margin: 126px auto;
         min-width: 100%;
+    }
+   /* .main-content-section-control-hall-list {
+              margin-bottom: 20px;
+    }*/
+
+    .main-content-section-control-hall-item {
+        margin-top: 9px;
+    }
+    .main-content-section-control-hall-list {
+        margin-bottom: 17px;
+    }
+    .main-content-section-price-hall {
+        margin-bottom: 14x;
+    }
+    .main-content-section-price-type-item {
+        margin-bottom: 7px;
+    }
+    .main-content-section-price-type span {
+       font-size: 14px;
+    }
+    .main-content-section-price-hall {
+        padding-left: 104px;
+    }
+    .main-content-section-configuration-type-save {
+      margin-left: 170px;
+    }
+    .main-content-section-price-type {
+       /* padding: 16px;*/
+    
+    }
+    .main-content-section-price-type {
+        padding-left: 104px;
     }
 
     .main-content-add-btns {
@@ -1699,7 +1913,7 @@ body {
 
     .main-content {
         width: 960px;
-        margin: 100px auto;
+        margin: 36px auto;
     }
 
     .main-content-add {
