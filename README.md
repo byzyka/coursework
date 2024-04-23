@@ -1,5 +1,5 @@
 # О работе:
-1. ссылка на pages https://byzyka.github.io/coursework/admin/index.html
+1. ссылка на pages https://byzyka.github.io/coursework/
 > Подключала скрипты:
 1. jquery.fancybox
 2. QRCreator.js
