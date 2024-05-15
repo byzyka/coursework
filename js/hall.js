@@ -1,7 +1,7 @@
 let seanceData = localStorage.getItem("seance-data");
 let parsedSeances = JSON.parse(seanceData);
 
-console.log(parsedSeances);
+//console.log(parsedSeances.takenDay);
 
 let schemeHall = document.querySelector(
   ".main-content-buying-hall-scheme-items-rows"
@@ -32,44 +32,34 @@ priceVip.innerText = `${parsedSeances.hallPriceVip}`;
 
 let acceptinButton = document.querySelector('.main-content-buying-book');
 
-function checkSelectedChairs(){
-    let allSelectedChairs = document.querySelectorAll('.main-content-buying-hall-scheme-item.selected');
-   
-    //console.log(allSelectedChairs);
+function checkSelectedChairs() {
+  let allSelectedChairs = document.querySelectorAll('.main-content-buying-hall-scheme-item.selected');
 
-     if (allSelectedChairs.length > 0) {
-        acceptinButton.removeAttribute('disabled');
-    } else {
-        acceptinButton.setAttribute('disabled', 'disabled');
-    }
+  //console.log(allSelectedChairs);
+
+  if (allSelectedChairs.length > 0) {
+    acceptinButton.removeAttribute('disabled');
+  } else {
+    acceptinButton.setAttribute('disabled', 'disabled');
+  }
 
 }
 
+fetch('https://shfe-diplom.neto-server.ru/hallconfig?seanceId=' + parsedSeances.seanceId + '&date=' + parsedSeances.takenDay)
+  .then(response => response.json())
 
-
-createRequest(
-  "GET",
-  "https://shfe-diplom.neto-server.ru/alldata",
-  `event=get_hallConfig&timestamp=${parsedSeances.seanceTimeStamp}&hallId=${parsedSeances.hallId}&seanceId=${parsedSeances.seanceId}`,
-  function (response) {
-    console.log(response);
-
-    if (response) {
-      parsedSeances.hallConfig = response;
-     
-    } else {
-      console.log("Нет купленных билетов");
-    }
-
+  .then((data) => {
+    
     schemeHall.innerHTML = "";
 
     let newHall = "";
 
-    parsedSeances.configHall.forEach((row) => {
-      console.log(row);
+    data.result.forEach((row) => {
+      //console.log(row);
       newHall += `<div class="main-content-buying-hall-scheme-items-row">`;
       row.forEach((item) => {
-        if (item == "disabled") {
+
+        if (item == "taken") {
           newHall += `<div class="main-content-buying-hall-scheme-item free busy"></div>`;
         } else if (item == "vip") {
           newHall += `<div class="main-content-buying-hall-scheme-item free vip"></div>`;
@@ -101,46 +91,57 @@ createRequest(
         }
       });
     }
-    
-    
 
-   // console.log(allSelectedChairs);
-
-    
-    
+    // console.log(allSelectedChairs);
 
     acceptinButton.addEventListener('click', event => {
-       //event.preventDefault()
-        
-        let selectedChairs = [];
-       let allSelectedChairs = document.querySelectorAll('.main-content-buying-hall-scheme-item.selected');
+      //event.preventDefault()
 
-        allSelectedChairs.forEach((selectedChair) => {
-            
-            console.log(selectedChair)
-            let rowElement = selectedChair.closest('.main-content-buying-hall-scheme-items-row');
-            let rowIndex = Array.from(rowElement.parentNode.children).indexOf(rowElement) + 1;
-            let placeIndex = Array.from(rowElement.children).indexOf(selectedChair) + 1;
-            let typePlace;
-            
-            if (selectedChair.classList.contains('vip')) {
+      let selectedChairs = [];
+      let allSelectedChairs = document.querySelectorAll('.main-content-buying-hall-scheme-item.selected');
+      let allTickets = [];
+      //console.log(parsedSeances.hallPriceVip);
+      allSelectedChairs.forEach((selectedChair) => {
 
-                typePlace = 'vip';
-            } else if (selectedChair.classList.contains('free')) {
-                typePlace = 'standart';
+
+        let rowElement = selectedChair.closest('.main-content-buying-hall-scheme-items-row');
+        let rowIndex = Array.from(rowElement.parentNode.children).indexOf(rowElement) + 1;
+        let placeIndex = Array.from(rowElement.children).indexOf(selectedChair) + 1;
+        let typePlace;
+        let price;
+
+        if (selectedChair.classList.contains('vip')) {
+
+          typePlace = 'vip';
+          price = parsedSeances.hallPriceVip;
+
+        } else if (selectedChair.classList.contains('free')) {
+          typePlace = 'standart';
+          price = parsedSeances.hallPriceStandart;
+        }
+
+        selectedChairs.push({ row: rowIndex, place: placeIndex, type: typePlace });
+        allTickets.push({ row: rowIndex, place: placeIndex, coast: +price });
+
+        parsedSeances.configHall.forEach((row, index) => {
+          row.forEach((place, i) => {
+            //console.log(place);
+            if (index == rowIndex && i == placeIndex) {
+              selectedChair.classList.add('busy');
+
             }
+          })
+        })
+      });
 
-            
-            selectedChairs.push({ row: rowIndex, place: placeIndex, type: typePlace });
-               
-        });
+      //console.log(data.result);
+      parsedSeances.selectedPlaces = selectedChairs;
+      parsedSeances.tickets = allTickets;
+      localStorage.setItem('seance-data', JSON.stringify(parsedSeances));
 
-   
-        parsedSeances.selectedPlaces = selectedChairs;
-       
-        localStorage.setItem('seance-data', JSON.stringify(parsedSeances));
-        console.log(parsedSeances)
+      console.log(parsedSeances.tickets);
+
       window.location.href = "../html/pay.html";
     });
   }
-);
+  );

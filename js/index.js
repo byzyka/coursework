@@ -34,37 +34,40 @@ document.addEventListener("DOMContentLoaded", () => {
         return daysOfWeek[date.getDay()];
     }
 
-    createRequest(
-        "GET",
-        "https://shfe-diplom.neto-server.ru/alldata",
-        "event=update",
-        function (response) {
-           // console.log(response);
-            let films = response.result.films;
+    fetch("https://shfe-diplom.neto-server.ru/alldata", {})
+        .then((response) => response.json())
+        .then((data) => {
+
+            let films = data.result.films;
+            //console.log(data.result.seances);
+
+            let arrSortSeances = Object.values(data.result.seances).sort((a, b) => a.seance_time.localeCompare(b.seance_time));
+            //console.log(arrSortSeances);
+
             let takenDay;
-            let halls = response.result.halls.filter(
+            let halls = data.result.halls.filter(
                 (openhalls) => openhalls.hall_open !== "0");
-            
-            let allSeances = response.result.seances;
-            
+
+            let allSeances = arrSortSeances;
+
             let main = document.querySelector(".main");
             main.innerHTML = "";
 
             for (let film of films) {
-                
+
                 let hallSeances = "";
                 halls.forEach((hall) => {
                     let seances = allSeances.filter(
                         (seance) =>
                             seance.seance_filmid == film.id && seance.seance_hallid == hall.id
                     );
-                    
+
                     if (seances.length > 0) {
                         hallSeances += `<div class="main-content-hall">
                         <div class="main-content-hall-header"> ${hall.hall_name} </div>
                             <div class="main-content-hall-seanses">`;
-                            seances.forEach(seance => {
-                                hallSeances += `<div>
+                        seances.forEach(seance => {
+                            hallSeances += `<div>
                                 <a class="main-content-hall-time" href="html/hall.html" data-film-name ="${film.film_name}" 
                                 data-seance-time="${seance.seance_time}" 
                                 data-hall-name="${hall.hall_name}" data-hall-id="${hall.id}" data-seance-id="${seance.id}" 
@@ -72,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 data-seance-duration="${film.film_duration}"
                                 data-hall-price-vip="${hall.hall_price_vip}">${seance.seance_time}</a>
                                 </div>`;
-                            })
+                        })
                         hallSeances += `    </div>          
                         </div>`;
                     }
@@ -109,13 +112,13 @@ document.addEventListener("DOMContentLoaded", () => {
             let seancesTime = document.querySelectorAll(".main-content-hall-time");
             //console.log(seancesTime);
             let dateNumber = document.querySelector('.content-nav-week-day.active').getElementsByClassName("number")[0].textContent;
-           
+
 
             updSeanses(seancesTime);
-            
+
             for (let pageNavDay of dayWeekElements) {
                 pageNavDay.addEventListener("click", (event) => {
-                
+
                     let pageNavDayIndex = Array.from(dayWeekElements).indexOf(pageNavDay);
                     //console.log(seancesTime);
                     let selectedDay = document.querySelector(".active");
@@ -123,34 +126,35 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (selectedDay) {
                         selectedDay.classList.remove("active");
                     }
-            
-                     pageNavDay.dataset.index = pageNavDayIndex;
-                     pageNavDay.classList.add("active");
-                
+
+                    pageNavDay.dataset.index = pageNavDayIndex;
+                    pageNavDay.classList.add("active");
+
                     seancesTime.forEach((time) => {
-                                                       
+
                         let selectedDate = new Date();
                         selectedDate.setDate(selectedDate.getDate() + pageNavDayIndex);
                         selectedDate.getMonth();
-                        takenDay = selectedDate.toLocaleDateString();
-                        console.log(takenDay);                
+                        takenDay = moment(selectedDate).format('YYYY-MM-DD');
+                        //console.log(takenDay)
                     });
 
                     updSeanses(seancesTime);
-                   
+
                 });
             }
-                  
-           let current = new Date();
+
+            let current = new Date();
 
             seancesTime.forEach((time) => {
                 time.addEventListener("click", (event) => {
                     //event.preventDefault();
-                    if(!takenDay) {
-                        //console.log(7)
+                    if (!takenDay) {
+                        //
                         //return false;
-                        takenDay = current.toLocaleDateString()
-                    } 
+                        takenDay = current.toLocaleDateString();;
+                        console.log(takenDay);
+                    }
 
                     let hallId = event.target.dataset.hallId;
                     let selectedHall = halls.find((hall) => hall.id == hallId);
@@ -163,40 +167,40 @@ document.addEventListener("DOMContentLoaded", () => {
                     };
                     console.log(selectedSeance);
                     let jsonSeance = JSON.stringify(selectedSeance);
-                    
+
                     localStorage.setItem("seance-data", jsonSeance);
-                    console.log(jsonSeance);
+                    //console.log(jsonSeance);
                 });
             });
         }
-    );
+        );
 
     function updSeanses(seanses) {
-        seanses.forEach(seance => {     
-                  
+        seanses.forEach(seance => {
+
             let arTime = seance.getAttribute('data-seance-time').split(':');
             let filmDuration = seance.getAttribute('data-seance-duration');
 
-            let selectedDayIndex = document.querySelector('.content-nav-week-day.active').getAttribute('data-index'); 
-            if(selectedDayIndex == null) {
+            let selectedDayIndex = document.querySelector('.content-nav-week-day.active').getAttribute('data-index');
+            if (selectedDayIndex == null) {
                 selectedDayIndex = 0;
             }
 
-            let date = new Date();            
-            let seanceTime =  new Date(date.getFullYear(), date.getMonth(), date.getDate(), arTime[0], arTime[1]);
+            let date = new Date();
+            let seanceTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), arTime[0], arTime[1]);
             seanceTime.setDate(seanceTime.getDate() + parseInt(selectedDayIndex));
             seanceTime = Math.floor(seanceTime.getTime() / 1000);
 
             let selectedDate = new Date();
             selectedDate.setDate(selectedDate.getDate() + parseInt(selectedDayIndex));
 
-            if(selectedDayIndex != 0) {
+            if (selectedDayIndex != 0) {
                 selectedDate.setHours(0, 0, 0);
             }
-            
+
             let currentDay = Math.floor(selectedDate.getTime() / 1000);
 
-            if(currentDay > seanceTime) {                
+            if (currentDay > seanceTime) {
                 seance.classList.add('disabled');
             } else {
                 seance.classList.remove('disabled');

@@ -35,9 +35,7 @@ html,
 body {
     height: 100%;
     width: 100%;
-    font-style: 100%;
     line-height: 1;
-    font-style: 14px;
     -ms-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
@@ -444,6 +442,10 @@ body {
     border-radius: 4px;
     background-color: rgba(196, 196, 196, 0);
     border: 1px solid rgba(132, 132, 132, 1)
+}
+.main-content-section-open-btn.disabled {
+    background-color: #888888;
+    pointer-events: none;
 }
 
 .main-content-section-configuration-type-descr {
@@ -853,7 +855,10 @@ body {
     background-color: rgba(133, 153, 255, 1);
 }
 
-
+.main-content-section-open-btn.disabled {
+    background-color: #888888;
+    pointer-events: none;
+}
 .main-content-section-sessions-hall-net-movie {
 
     height: 40px;
@@ -985,7 +990,10 @@ body {
         top: 33px;
         right: 40px;
     }
-    
+    .main-content-section-open-btn.disabled {
+        background-color: #888888;
+        pointer-events: none;
+    }
     .main-content-section-control-hall {
         padding-left: 80px;
 

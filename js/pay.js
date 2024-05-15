@@ -1,6 +1,6 @@
 let paymentInfo = localStorage.getItem("seance-data");
 let parsedselectedChairs = JSON.parse(paymentInfo);
-    console.log(parsedselectedChairs);
+//console.log(parsedselectedChairs.configHall);
 
 let movieTitle = document.querySelector(".main-content-ticket-info-name span");
 
@@ -15,8 +15,8 @@ let selectedPlace = [];
 
 place.innerHTML = " ";
 
-parsedselectedChairs.selectedPlaces.forEach((item) => {  
-    selectedPlace.push('<span class="main-content-ticket-info-place-span">'+item.row+'/'+item.place+'</span>');
+parsedselectedChairs.selectedPlaces.forEach((item) => {
+    selectedPlace.push('<span class="main-content-ticket-info-place-span">' + item.row + '/' + item.place + '</span>');
 });
 
 place.innerHTML += `<div class="main-content-ticket-info-place">Ряд/Место: ${selectedPlace.join(', ')}<div>`;
@@ -39,7 +39,7 @@ let priceSum = 0;
 parsedselectedChairs.selectedPlaces.forEach((item) => {
     if (item.type == "standart") {
         standartPrice.push(+parsedselectedChairs.hallPriceStandart);
-  }
+    }
     if (item.type == "vip") {
         vipPrice.push(+parsedselectedChairs.hallPriceVip);
     }
@@ -48,7 +48,7 @@ parsedselectedChairs.selectedPlaces.forEach((item) => {
     allSum.push(...standartPrice, ...vipPrice);
 
     priceSum = allSum.reduce((a, b) => a + b, 0);
-    console.log(priceSum);
+    // console.log(priceSum);
     priceSeances.innerHTML = "";
     priceSeances.innerHTML += `<div class="main-content-ticket-info-price">Стоимость: <span class="main-content-ticket-info-price-span">${priceSum}</span> рублей </div>`;
 
@@ -59,7 +59,7 @@ let acceptinButton = document.querySelector('.main-content-ticket-btn-qr');
 let ticket = parsedselectedChairs;
 
 ticket.price = priceSum;
- 
+
 
 acceptinButton.addEventListener('click', event => {
     //event.preventDefault();

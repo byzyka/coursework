@@ -1,6 +1,6 @@
 let ticketInfo = localStorage.getItem('ticket-data');
-  let parsedTickets = JSON.parse(ticketInfo);
-  console.log(parsedTickets);
+let parsedTickets = JSON.parse(ticketInfo);
+//console.log(parsedTickets);
 
 let movieName = document.querySelector('.main-content-ticket-info-name span');
 //console.log(movieName);
@@ -30,11 +30,38 @@ parsedTickets.selectedPlaces.forEach( item => {
     allRow.push(item.row);
     allPlaces.push(item.place);
 
-} )
-
+})
+//console.log(typeof(parsedTickets.takenDay) )
 
 
 let QR = [parsedTickets.takenDay, parsedTickets.seanceTime, parsedTickets.filmName, parsedTickets.hallName, 'Ряд: '+ allRow.join(', '),  'Место: '+ allPlaces.join(', '), 'Стоимость: '+parsedTickets.price + ' руб.', "Билет действителен строго на свой сеанс"].join(', ');
 
 //let qrImg = QRCreator (arrQr)
 document.querySelector('.main-content-ticket-qr').append(QRCreator(QR,  { image: "SVG" }).result);
+//console.log(parsedTickets.tickets);
+
+let ticketsArr = [];
+parsedTickets.tickets.forEach(i => {
+  //console.log(i);
+  ticketsArr.push(i);
+})
+
+//console.log(ticketsArr);
+
+const paramsTicket = new FormData();
+paramsTicket.set('seanceId', parsedTickets.seanceId);
+paramsTicket.set('ticketDate', parsedTickets.takenDay);
+paramsTicket.set('tickets', JSON.stringify(ticketsArr));
+
+/*paramsTicket.forEach((value, key) => {
+        console.log(key, value);
+    });
+*/
+        fetch('https://shfe-diplom.neto-server.ru/ticket', {
+          method: 'POST',
+         body: paramsTicket,
+        })
+          .then(response => response.json())
+          .then(data => {
+            //console.log(data);
+          })
