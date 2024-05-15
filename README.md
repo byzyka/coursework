@@ -5,3 +5,4 @@
 2. QRCreator.js
 3. slick.js
 4. jquery.js
+5. moment.js
