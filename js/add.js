@@ -1,11 +1,40 @@
-updateHall();
-updateaddHalls();
-scalePaint();
+
+document.addEventListener("DOMContentLoaded", () => {
+ 
+let alldata;
+
+  const getData = async () => {
+    const response = await fetch("https://shfe-diplom.neto-server.ru/alldata");
+    const data = await response.json();
+    alldata = data;
+    return data;
+  };
+
+  (async () => {
+    await getData();
+   // console.log(alldata);
+  
+ // console.log(dataGlobal);
+
+/*let alldata ="";
+fetch("https://shfe-diplom.neto-server.ru/alldata", {})
+    .then((response) => response.json())
+    .then((data) => {
+      alldata = data;
+            console.log(alldata);
+         
+      });
+      
+console.log(alldata);*/
+
+
+updateHall(alldata);
+updateaddHalls(alldata);
+scalePaint(alldata);
 
 //добавляем зал
 let button = document.querySelector(".main-content-section-control-hall-btn-link");
 let addHallButton = document.querySelector(".main-content-add-btn");
-
 
 addHallButton.addEventListener("click", (e) => {
   e.preventDefault();
@@ -38,51 +67,54 @@ addHallButton.addEventListener("click", (e) => {
 
 //получение всех залов и запись их в верстку
 
-function updateHall() {
-  fetch("https://shfe-diplom.neto-server.ru/alldata", {})
-    .then((response) => response.json())
-    .then((data) => {
-      // console.log(data.result.halls);
-      let list = document.querySelector(".main-content-section-control-hall-list");
-      list.innerHTML = "";
-
-      list.innerHTML += `<div class="main-content-section-control-hall-list"> Доступные залы:`;
-      data.result.halls.forEach((hall) => {
-        //console.log(hall.hall_name);
-        list.innerHTML += `<div class="main-content-section-control-hall-item"> ${hall.hall_name}
-                <button class="main-content-section-control-hall-item-del" data-hall-id=${hall.id} >
-                </button></div>`;
-      });
-      list.innerHTML += `</div>`;
-
-      let delHall = document.querySelectorAll(".main-content-section-control-hall-item-del");
-      //console.log(delHall);
-
-      delHall.forEach((item) => {
-        item.addEventListener("click", (e) => {
-          e.preventDefault();
-
-          let targetDel = e.target;
-          let hallId = targetDel.getAttribute("data-hall-id");
-          //console.log(hallId);
-          fetch("https://shfe-diplom.neto-server.ru/hall/" + hallId, {
-            method: "DELETE",
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              //console.log(data);
-              if (data.success) {
-                targetDel.closest(".main-content-section-control-hall-item").remove();
-                //updateHall();
-                updateaddHalls();
-                updatePriceHalls();
-                scalePaint();
-                openHall();
-              }
-            });
-        });
-      });
+async function updateHall(data = []) {
+  if(data.length == 0) {
+      await fetch("https://shfe-diplom.neto-server.ru/alldata", {})
+      .then((response) => response.json())
+      .then((res) => {
+      data = res;
     });
+  } 
+  //console.log(data);
+  let list = document.querySelector(".main-content-section-control-hall-list");
+  list.innerHTML = "";
+
+  list.innerHTML += `<div class="main-content-section-control-hall-list"> Доступные залы:`;
+  data.result.halls.forEach((hall) => {
+    //console.log(hall.hall_name);
+    list.innerHTML += `<div class="main-content-section-control-hall-item"> ${hall.hall_name}
+            <button class="main-content-section-control-hall-item-del" data-hall-id=${hall.id} >
+            </button></div>`;
+  });
+  list.innerHTML += `</div>`;
+
+  let delHall = document.querySelectorAll(".main-content-section-control-hall-item-del");
+  //console.log(delHall);
+
+  delHall.forEach((item) => {
+    item.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      let targetDel = e.target;
+      let hallId = targetDel.getAttribute("data-hall-id");
+      //console.log(hallId);
+      fetch("https://shfe-diplom.neto-server.ru/hall/" + hallId, {
+        method: "DELETE",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          //console.log(data);
+          if (data.success) {
+            targetDel.closest(".main-content-section-control-hall-item").remove();
+            
+            updateaddHalls();
+            updatePriceHalls();
+            scalePaint();
+            openHall();
+          }
+        });
+    });
+ });
 }
 
 // КОНФИГУРАЦИЯ ЗАЛОВ
@@ -127,7 +159,7 @@ saveBtn.addEventListener("click", (e) => {
 
     config.push(rowChair);
   });
-  alert("Успешно!");
+  
 
   //массив со схемой кинозала
   let params = new FormData();
@@ -140,7 +172,14 @@ saveBtn.addEventListener("click", (e) => {
     body: params,
   })
     .then((response) => response.json())
-    .then((data) => console.log(data));
+    .then((data) => {
+      if (data.success) {
+           alert('Успешно');
+    } else {
+      alert(data.error);
+      return false;
+    }})
+    //console.log(data));
 });
 
 let resetBtn = document.getElementById("nosaveHall");
@@ -195,96 +234,103 @@ function chairsClick() {
 }
 
 //записали имя и id в зал
-function updateaddHalls() {
-  fetch("https://shfe-diplom.neto-server.ru/alldata", {})
+async function updateaddHalls(data = []) {
+  if(data.length == 0) {
+    await fetch("https://shfe-diplom.neto-server.ru/alldata", {})
     .then((response) => response.json())
-    .then((data) => {
-      let configHall = document.querySelector(".main-content-section-configuration-list");
+    .then((res) => {
+    data = res;
+     });
+  } 
+ 
+//console.log(data)
+  let configHall = document.querySelector(".main-content-section-configuration-list");
 
-      configHall.innerHTML = "";
-      let classActive = 'active';
-      data.result.halls.forEach((hall, i) => {
-        if (i !== 0) {
-          classActive = "";
-        }
-        configHall.innerHTML += `<button class="main-content-section-configuration-item ${classActive}" data-hall-index="${i}" data-hall-id="${hall.id}">${hall.hall_name}</button>`;
-      });
+  configHall.innerHTML = "";
+  let classActive = 'active';
+  data.result.halls.forEach((hall, i) => {
+    if (i !== 0) {
+      classActive = "";
+    }
+    configHall.innerHTML += `<button class="main-content-section-configuration-item ${classActive}" data-hall-index="${i}" data-hall-id="${hall.id}">${hall.hall_name}</button>`;
+  });
 
-      // Выбрали зал
-      let hallBtns = document.querySelectorAll(".main-content-section-configuration-item");
-      //console.log(hallBtns);
-      hallBtns.forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-          e.preventDefault();
-          let selectedHall = document.querySelector(".active");
-          if (selectedHall) {
-            selectedHall.classList.remove("active");
-          }
-          btn.classList.add("active");
-          updateInputHall(e.target.getAttribute('data-hall-index'));
-        });
-      });
+  // Выбрали зал
+  let hallBtns = document.querySelectorAll(".main-content-section-configuration-item");
+  //console.log(hallBtns);
+  hallBtns.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      let selectedHall = document.querySelector(".active");
+      if (selectedHall) {
+        selectedHall.classList.remove("active");
+      }
+      btn.classList.add("active");
+      updateInputHall(e.target.getAttribute('data-hall-index'));
     });
+  });  
 }
-updateInputHall();
+updateInputHall(0, alldata);
 
-function updateInputHall(indexHall = 0) {
-  fetch("https://shfe-diplom.neto-server.ru/alldata", {})
+async function updateInputHall(indexHall = 0, data = []) {
+  if(data.length == 0) {
+    await fetch("https://shfe-diplom.neto-server.ru/alldata", {})
     .then((response) => response.json())
-    .then((data) => {
-      //console.log(data.result.halls);
-      let arrConfig = [];
-      let schemeHall = document.querySelector('.main-content-section-configuration-type-hall-items');
-      let newHall = "";
-      schemeHall.innerHTML = "";
-      data.result.halls.forEach((hall, i) => {
-        if (indexHall == i) {
+    .then((res) => {
+    data = res;
+     });
+  } 
+  let arrConfig = [];
+  let schemeHall = document.querySelector('.main-content-section-configuration-type-hall-items');
+  let newHall = "";
+  schemeHall.innerHTML = "";
+  data.result.halls.forEach((hall, i) => {
+    if (indexHall == i) {
 
-          arrConfig.push(hall.hall_config);
+      arrConfig.push(hall.hall_config);
 
-          let row = document.getElementById('row');
-          row.value = hall.hall_config.length;
-          let place = document.getElementById('place');
-          place.value = hall.hall_config[0].length;
+      let row = document.getElementById('row');
+      row.value = hall.hall_config.length;
+      let place = document.getElementById('place');
+      place.value = hall.hall_config[0].length;
 
-          arrConfig.forEach((row) => {
-            newHall = "";
+      arrConfig.forEach((row) => {
+        newHall = "";
 
-            row.forEach((items) => {
-              newHall += `<div class="main-content-section-configuration-type-hall-items-row">`;
-              items.forEach(item => {
-                //console.log(item);
-                if (item == "standart") {
-                  newHall += `<div class="main-content-section-configuration-type-item standart" data-type-title="standart" data-type="0"></div>`;
-                } else if (item == "vip") {
-                  newHall += `<div class="main-content-section-configuration-type-item vip" data-type-title="vip" data-type="1"></div>`;
-                } else if (item == "disabled") {
-                  newHall += `<div class="main-content-section-configuration-type-item disabled"></div>`;
-                }
-              });
-              newHall += `</div>`;
-            })
+        row.forEach((items) => {
+          newHall += `<div class="main-content-section-configuration-type-hall-items-row">`;
+          items.forEach(item => {
+            //console.log(item);
+            if (item == "standart") {
+              newHall += `<div class="main-content-section-configuration-type-item standart" data-type-title="standart" data-type="0"></div>`;
+            } else if (item == "vip") {
+              newHall += `<div class="main-content-section-configuration-type-item vip" data-type-title="vip" data-type="1"></div>`;
+            } else if (item == "disabled") {
+              newHall += `<div class="main-content-section-configuration-type-item disabled"></div>`;
+            }
           });
-          schemeHall.innerHTML = newHall;
-          chairsClick();
-        }
-      })
-    })
+          newHall += `</div>`;
+        })
+      });
+      schemeHall.innerHTML = newHall;
+      chairsClick();
+    }
+  })
 }
 
-updatePriceHalls();
-updateInputPriceHall();
+updatePriceHalls(alldata);
+updateInputPriceHall(alldata);
 
-function updateInputPriceHall(indexHall = 0) {
-  fetch("https://shfe-diplom.neto-server.ru/alldata", {})
-    .then((response) => response.json())
-    .then((data) => {
+function updateInputPriceHall(response, indexHall = 0) {
+ // fetch("https://shfe-diplom.neto-server.ru/alldata", {})
+   // .then((response) => response.json())
+    //.then((data) => {
 
       let arrStandartPrice = [];
       let arrVipPrice = [];
       let standartPrice = document.getElementById('standartPrice');
       let vipPrice = document.getElementById('vipPrice');
-      data.result.halls.forEach(hall => {
+      response.result.halls.forEach(hall => {
 
         arrStandartPrice.push(hall.hall_price_standart);
 
@@ -301,15 +347,20 @@ function updateInputPriceHall(indexHall = 0) {
           }
         })
       })
-    })
+    //})
 }
 //изменение цен в залах
 
-function updatePriceHalls() {
-  fetch("https://shfe-diplom.neto-server.ru/alldata", {})
+async function updatePriceHalls(data = []) {
+  if(data.length == 0) {
+    await fetch("https://shfe-diplom.neto-server.ru/alldata", {})
     .then((response) => response.json())
-    .then((data) => {
-      updateHall();
+    .then((res) => {
+    data = res;
+     });
+  } 
+
+      updateHall(data);
 
       let configHall = document.querySelector(".main-content-section-price-hall-list");
 
@@ -333,11 +384,11 @@ function updatePriceHalls() {
             selectedHall.classList.remove("active");
           }
           btn.classList.add("active");
-          updateInputPriceHall(e.target.getAttribute('data-hall-index'));
+          updateInputPriceHall(alldata, e.target.getAttribute('data-hall-index'));
 
         });
       });
-    });
+  
 }
 
 let savePriceBtn = document.getElementById("savePrice");
@@ -381,8 +432,12 @@ savePriceBtn.addEventListener("click", (e) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      alert("Успешно!");
-      console.log(data)
+      if (data.success) {
+      alert('Успешно');
+      } else {
+      alert(data.error);
+      return false;
+      }
     }
     );
 });
@@ -410,68 +465,71 @@ addMovieBtn.addEventListener("click", (e) => {
     });
 });
 
-addFilms();
+addFilms(alldata);
 
-function addFilms() {
-  fetch("https://shfe-diplom.neto-server.ru/alldata", {})
+async function addFilms(data = []) {
+  if(data.length == 0) {
+    await fetch("https://shfe-diplom.neto-server.ru/alldata", {})
     .then((response) => response.json())
-    .then((data) => {
+    .then((res) => {
+    data = res;
+     });
+  } 
 
-      let allFilms = data.result.films;
-      let previous = document.querySelector(".main-content-section-sessions-list");
+    let allFilms = data.result.films;
+    let previous = document.querySelector(".main-content-section-sessions-list");
 
-      previous.innerHTML = "";
-      let prevMovie = "";
+    previous.innerHTML = "";
+    let prevMovie = "";
 
-      allFilms.forEach((film) => {
-        // console.log(film);
-        prevMovie += `
-        <div class="main-content-section-sessions-item" draggable="true" >
-            <div class="main-content-section-sessions-item-img">
-                <img src="${film.film_poster}" alt="poster">
-            </div>
-            <div class="main-content-section-sessions-item-descr">
-                <div class="main-content-section-sessions-item-title">${film.film_name}</div>
-                <div class="main-content-section-sessions-item-time">${film.film_duration}</div>
-            </div>
-            <div class="main-content-section-sessions-item-del" data-film-id=${film.id}></div>
-            </div>`;
-      });
+    allFilms.forEach((film) => {
+      // console.log(film);
+      prevMovie += `
+      <div class="main-content-section-sessions-item" draggable="true" >
+          <div class="main-content-section-sessions-item-img">
+              <img src="${film.film_poster}" alt="poster">
+          </div>
+          <div class="main-content-section-sessions-item-descr">
+              <div class="main-content-section-sessions-item-title">${film.film_name}</div>
+              <div class="main-content-section-sessions-item-time">${film.film_duration}</div>
+          </div>
+          <div class="main-content-section-sessions-item-del" data-film-id=${film.id}></div>
+          </div>`;
+    });
 
-      previous.innerHTML += prevMovie;
+    previous.innerHTML += prevMovie;
 
-      let delFilmBtn = document.querySelectorAll(".main-content-section-sessions-item-del");
-      //console.log(delFilmBtn);
+    let delFilmBtn = document.querySelectorAll(".main-content-section-sessions-item-del");
+    //console.log(delFilmBtn);
 
-      delFilmBtn.forEach((item) => {
-        item.addEventListener("click", (e) => {
-          e.preventDefault();
+    delFilmBtn.forEach((item) => {
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
 
-          let targetFilmDel = e.target;
-          console.log(targetFilmDel);
-          let filmId = targetFilmDel.getAttribute("data-film-id");
+        let targetFilmDel = e.target;
+        console.log(targetFilmDel);
+        let filmId = targetFilmDel.getAttribute("data-film-id");
 
-          console.log(filmId);
-          fetch("https://shfe-diplom.neto-server.ru/film/" + filmId, {
-            method: "DELETE",
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              // console.log(data);
-              if (data.success) {
-                targetFilmDel.closest(".main-content-section-sessions-item").remove();
-                updateHall()
-                updateaddHalls();
-                updatePriceHalls();
-                scalePaint();
-                seanceDel();
-              }
-            });
-        });
+        console.log(filmId);
+        fetch("https://shfe-diplom.neto-server.ru/film/" + filmId, {
+          method: "DELETE",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // console.log(data);
+            if (data.success) {
+              targetFilmDel.closest(".main-content-section-sessions-item").remove();
+              updateHall()
+              updateaddHalls();
+              updatePriceHalls();
+              scalePaint();
+              seanceDel();
+            }
+          });
       });
     });
 }
-scalePaint();
+//scalePaint();
 
 //рисуем сетку с фильмами
 
@@ -479,12 +537,13 @@ function convertH2M(timeInHour) {
   let timeParts = timeInHour.split(":");
   return Number(timeParts[0]) * 60 + Number(timeParts[1]);
 }
+
 TimeLine();
 
 function TimeLine() {
-  fetch("https://shfe-diplom.neto-server.ru/alldata", {})
-    .then((response) => response.json())
-    .then((data) => {
+ // fetch("https://shfe-diplom.neto-server.ru/alldata", {})
+   // .then((response) => response.json())
+    //.then((data) => {
 
       const items = document.querySelectorAll('.main-content-section-sessions-item-prev');
       const timeline = document.querySelector('.main-content-section-sessions-hall-net');
@@ -497,115 +556,120 @@ function TimeLine() {
         let timeInMinutes = convertH2M(time);
         item.style.left = step * timeInMinutes + 'px';
       })
-    })
+   // })
 }
 
-function scalePaint() {
+async function scalePaint(data = []) {
+  if(data.length == 0) {
+    await fetch("https://shfe-diplom.neto-server.ru/alldata", {})
+    .then((response) => response.json())
+    .then((res) => {
+    data = res;
+     });
+  } 
+
   let hallSeance = document.querySelector(".main-content-section-sessions-halls");
   //console.log(hallSeance);
 
-  fetch("https://shfe-diplom.neto-server.ru/alldata", {})
-    .then((response) => response.json())
-    .then((data) => {
-      TimeLine();
+    
 
-      let scaleFilms = "";
-      hallSeance.innerHTML = "";
+    let scaleFilms = "";
+    hallSeance.innerHTML = "";
 
-      data.result.halls.forEach((hall) => {
+    data.result.halls.forEach((hall) => {
 
-        scaleFilms += `
-      <div class="main-content-section-sessions-hall"><span>${hall.hall_name}</span>
-      
-          <div class="main-content-section-sessions-hall-net" data-hall-id="${hall.id}" data-hall-name="${hall.hall_name}">`;
-        let allSeances = data.result.seances;
+      scaleFilms += `
+    <div class="main-content-section-sessions-hall"><span>${hall.hall_name}</span>
+    
+        <div class="main-content-section-sessions-hall-net" data-hall-id="${hall.id}" data-hall-name="${hall.hall_name}">`;
+      let allSeances = data.result.seances;
 
-        let seances = allSeances.filter((seance) => seance.seance_hallid == hall.id);
-        let arrSortSeances = Object.values(seances).sort((a, b) => a.seance_time.localeCompare(b.seance_time));
-        //console.log(arrSortSeances); 
-        arrSortSeances.forEach((seanceItem) => {
+      let seances = allSeances.filter((seance) => seance.seance_hallid == hall.id);
+      let arrSortSeances = Object.values(seances).sort((a, b) => a.seance_time.localeCompare(b.seance_time));
+      //console.log(arrSortSeances); 
+      arrSortSeances.forEach((seanceItem) => {
 
-          let allFilms = data.result.films;
-          let films = allFilms.filter(
-            (film) => seanceItem.seance_filmid == film.id
-          );
+        let allFilms = data.result.films;
+        let films = allFilms.filter(
+          (film) => seanceItem.seance_filmid == film.id
+        );
 
-          scaleFilms += `<div class="main-content-section-sessions-item-prev" data-seance-id="${seanceItem.id}" draggable="true">
-          <div class="main-content-section-sessions-hall-net-movie">${films[0].film_name}
-            </div><div class="movie-time">${seanceItem.seance_time}</div></div>`
+        scaleFilms += `<div class="main-content-section-sessions-item-prev" data-seance-id="${seanceItem.id}" draggable="true">
+        <div class="main-content-section-sessions-hall-net-movie">${films[0].film_name}
+          </div><div class="movie-time">${seanceItem.seance_time}</div></div>`
 
-        });
-        scaleFilms += `</div> <div class="basket-delete"></div></div>`;
       });
-
-      hallSeance.innerHTML = scaleFilms;
-
-      //перетаскивание
-      //элементы, которые можем перетаскивать
-      let movieList = document.querySelector(".main-content-section-sessions-list");
-
-      movieList.addEventListener("dragstart", (evt) => {
-        evt.target.classList.add("selected");
-        let titleTarget = evt.target.querySelector(".main-content-section-sessions-item-title").textContent;
-        // console.log(titleTarget);
-        let durationTarget = evt.target.querySelector(".main-content-section-sessions-item-time").textContent;
-        let id = evt.target.querySelector(".main-content-section-sessions-item-del");
-        let idTarget = id.getAttribute("data-film-id");
-
-        evt.dataTransfer.clearData();
-        evt.dataTransfer.setData("title", titleTarget);
-        evt.dataTransfer.setData("duration", durationTarget);
-        evt.dataTransfer.setData("id", idTarget);
-      });
-
-      movieList.addEventListener(`dragend`, (evt) => { evt.target.classList.remove(`selected`); });
-
-      //все залы
-      let hallsForFilms = document.querySelectorAll(".main-content-section-sessions-hall-net");
-
-      hallsForFilms.forEach((hall) => {
-
-        hall.addEventListener(`dragover`, (evt) => {
-          // Разрешаем сбрасывать элементы в эту область
-          evt.preventDefault();
-          //console.log(evt);
-          // Находим перемещаемый элемент
-          const activeElement = movieList.querySelector(`.selected`);
-
-          // Находим элемент, над которым в данный момент находится курсор
-          const currentHall = evt.target;
-          const isMoveable =
-            activeElement !== currentHall &&
-            currentHall.classList.contains("main-content-section-sessions-hall-net");
-          if (!isMoveable) {
-            return;
-          }
-        });
-        hall.addEventListener("drop", (evt) => {
-          if (evt.dataTransfer.getData("title") == '') {
-            return false;
-          }
-          evt.preventDefault();
-          $.fancybox.open({
-            src: "#addSeance",
-            type: "inline",
-            smallBtn: false,
-            toolbar: false,
-          });
-
-          let selectHall = document.getElementById("selectHall");
-          let selectFilm = document.getElementById("selectFilm");
-
-          selectHall.value = evt.target.getAttribute("data-hall-name");
-          //let idHall = evt.target.getAttribute('data-hall-id')          
-          selectFilm.value = evt.dataTransfer.getData("title");
-          selectHall.setAttribute('data-id', evt.target.getAttribute('data-hall-id'));
-          selectFilm.setAttribute('data-id', evt.dataTransfer.getData("id"));
-        });
-      });
+      scaleFilms += `</div> <div class="basket-delete"></div></div>`;
     });
-}
 
+    hallSeance.innerHTML = scaleFilms;
+
+    TimeLine();
+
+    //перетаскивание
+    //элементы, которые можем перетаскивать
+    let movieList = document.querySelector(".main-content-section-sessions-list");
+
+    movieList.addEventListener("dragstart", (evt) => {
+      evt.target.classList.add("selected");
+      let titleTarget = evt.target.querySelector(".main-content-section-sessions-item-title").textContent;
+      // console.log(titleTarget);
+      let durationTarget = evt.target.querySelector(".main-content-section-sessions-item-time").textContent;
+      let id = evt.target.querySelector(".main-content-section-sessions-item-del");
+      let idTarget = id.getAttribute("data-film-id");
+
+      evt.dataTransfer.clearData();
+      evt.dataTransfer.setData("title", titleTarget);
+      evt.dataTransfer.setData("duration", durationTarget);
+      evt.dataTransfer.setData("id", idTarget);
+    });
+
+    movieList.addEventListener(`dragend`, (evt) => { evt.target.classList.remove(`selected`); });
+
+    //все залы
+    let hallsForFilms = document.querySelectorAll(".main-content-section-sessions-hall-net");
+
+    hallsForFilms.forEach((hall) => {
+
+      hall.addEventListener(`dragover`, (evt) => {
+        // Разрешаем сбрасывать элементы в эту область
+        evt.preventDefault();
+        //console.log(evt);
+        // Находим перемещаемый элемент
+        const activeElement = movieList.querySelector(`.selected`);
+
+        // Находим элемент, над которым в данный момент находится курсор
+        const currentHall = evt.target;
+        const isMoveable =
+          activeElement !== currentHall &&
+          currentHall.classList.contains("main-content-section-sessions-hall-net");
+        if (!isMoveable) {
+          return;
+        }
+      });
+      hall.addEventListener("drop", (evt) => {
+        if (evt.dataTransfer.getData("title") == '') {
+          return false;
+        }
+        evt.preventDefault();
+        $.fancybox.open({
+          src: "#addSeance",
+          type: "inline",
+          smallBtn: false,
+          toolbar: false,
+        });
+
+        let selectHall = document.getElementById("selectHall");
+        let selectFilm = document.getElementById("selectFilm");
+
+        selectHall.value = evt.target.getAttribute("data-hall-name");
+        //let idHall = evt.target.getAttribute('data-hall-id')          
+        selectFilm.value = evt.dataTransfer.getData("title");
+        selectHall.setAttribute('data-id', evt.target.getAttribute('data-hall-id'));
+        selectFilm.setAttribute('data-id', evt.dataTransfer.getData("id"));
+      });
+    });    
+}
 
 let addSeance = document.getElementById("seanceAdded");
 let recetSeance = document.getElementById('cancelSeanse');
@@ -644,134 +708,145 @@ addSeance.addEventListener("click", (e) => {
     });
 });
 
-seanceDel();
+seanceDel(alldata);
 
-function seanceDel() {
-  fetch("https://shfe-diplom.neto-server.ru/alldata", {})
+async function seanceDel(data = []) {
+  if(data.length == 0) {
+    await fetch("https://shfe-diplom.neto-server.ru/alldata", {})
     .then((response) => response.json())
-    .then((data) => {
+    .then((res) => {
+    data = res;
+     });
+  } 
+  //console.log(data.result)
 
-      //console.log(data.result)
+  //все залы
 
-      //все залы
+  let hallsForDelete = document.querySelectorAll('.main-content-section-sessions-hall');
+  //console.log(hallsForDelete);
+  //перетаскивание сеансов в корзину delete
+  let dragged = null; // перемещенные данные
 
-      let hallsForDelete = document.querySelectorAll('.main-content-section-sessions-hall');
-      //console.log(hallsForDelete);
-      //перетаскивание сеансов в корзину delete
-      let dragged = null; // перемещенные данные
+  //перебрать каждый зал
+  let basketsDelete = document.querySelectorAll(".basket-delete");
+  hallsForDelete.forEach(hallDeleteFilm => {
 
-      //перебрать каждый зал
-      let basketsDelete = document.querySelectorAll(".basket-delete");
-      hallsForDelete.forEach(hallDeleteFilm => {
-
-        hallDeleteFilm.addEventListener("dragstart", (evt) => {
-          dragged = evt.target;
-          dragged.classList.add("selected");
-          console.log(dragged);
-          let targetHall = dragged.closest('.main-content-section-sessions-hall');
-          let showBasket = targetHall.querySelector('.basket-delete');
-          showBasket.classList.add('hover');
-        })
-
-        //end
-        hallDeleteFilm.addEventListener(`dragend`, (evt) => {
-          evt.target.classList.remove(`selected`);
-        });
-
-        hallDeleteFilm.addEventListener(`drop`, (evt) => {
-          let chooseHall = evt.target;
-
-          let targetHall = chooseHall.closest('.main-content-section-sessions-hall');
-          let showBasket = targetHall.querySelector('.basket-delete');
-
-          showBasket.classList.remove('hover');
-        });
-
-        //все корзины
-        basketsDelete.forEach((basket) => {
-          // console.log(basket);
-          basket.addEventListener(`dragleave`, (evt) => {
-            evt.target.classList.remove('hover');
-          });
-          basket.addEventListener(`dragover`, (evt) => {
-            evt.preventDefault();
-
-            // Находим перемещаемый элемент
-            const activeElement = hallDeleteFilm.querySelector(`.selected`);
-            // Находим элемент, над которым в данный момент находится курсор
-            const currentHall = evt.target;
-            const isMoveable = activeElement !== currentHall && currentHall.classList.contains("main-content-section-sessions-hall-net");
-
-            // Если нет, прерываем выполнение функции
-            if (!isMoveable) {
-              return;
-            }
-          });
-
-          //console.log(basket);
-          basket.addEventListener("drop", (evt) => {
-
-            evt.target.classList.remove('hover');
-            if (evt.dataTransfer.getData("title") != '') {
-              return false;
-            }
-            evt.preventDefault();
-            $.fancybox.open({
-              src: "#specifyMovie",
-              type: "inline",
-              smallBtn: false,
-              toolbar: false,
-            });
-
-            let seanceId = dragged.getAttribute("data-seance-id");
-
-            let draggedTitle = dragged.querySelector('.main-content-section-sessions-hall-net-movie');
-
-            let question = document.getElementById('cancelFilm');
-
-            question.innerHTML = "";
-
-            let draggedName = "";
-            draggedName += ` <div class="main-content-add-item-hall">
-              Вы действительно хотите снять с сеанса фильм "${draggedTitle.textContent}"?
-            </div>`
-            question.innerHTML = draggedName;
-
-            let delMovie = document.getElementById('MovieDel');
-            delMovie.addEventListener('click', e => {
-              e.preventDefault();
-
-              fetch("https://shfe-diplom.neto-server.ru/seance/" + seanceId, {
-                method: "DELETE",
-              })
-                .then((response) => response.json())
-                .then((data) => {
-                  // console.log(data);
-                  if (data.success) {
-                    dragged.closest(".main-content-section-sessions-item-prev").remove();
-                  }
-                });
-              $.fancybox.close();
-              updateHall();
-              updateaddHalls();
-              openHall();
-            })
-
-            let cancelRemove = document.getElementById('cancelRemove');
-            cancelRemove.addEventListener("click", () => document.location.reload());
-          });
-        })
-      })
+    hallDeleteFilm.addEventListener("dragstart", (evt) => {
+      dragged = evt.target;
+      dragged.classList.add("selected");
+    //  console.log(dragged);
+      let targetHall = dragged.closest('.main-content-section-sessions-hall');
+      let showBasket = targetHall.querySelector('.basket-delete');
+      showBasket.classList.add('hover');
     })
-}
-openHall();
 
-function openHall(activeId = 0) {
-  fetch("https://shfe-diplom.neto-server.ru/alldata", {})
+    //end
+    hallDeleteFilm.addEventListener(`dragend`, (evt) => {
+      evt.target.classList.remove(`selected`);
+    });
+
+    hallDeleteFilm.addEventListener(`drop`, (evt) => {
+      let chooseHall = evt.target;
+
+      let targetHall = chooseHall.closest('.main-content-section-sessions-hall');
+      let showBasket = targetHall.querySelector('.basket-delete');
+
+      showBasket.classList.remove('hover');
+    });
+
+    //все корзины
+    basketsDelete.forEach((basket) => {
+      // console.log(basket);
+      basket.addEventListener(`dragleave`, (evt) => {
+        evt.target.classList.remove('hover');
+      });
+      basket.addEventListener(`dragover`, (evt) => {
+        evt.preventDefault();
+
+        // Находим перемещаемый элемент
+        const activeElement = hallDeleteFilm.querySelector(`.selected`);
+        // Находим элемент, над которым в данный момент находится курсор
+        const currentHall = evt.target;
+        const isMoveable = activeElement !== currentHall && currentHall.classList.contains("main-content-section-sessions-hall-net");
+
+        // Если нет, прерываем выполнение функции
+        if (!isMoveable) {
+          return;
+        }
+      });
+
+      //console.log(basket);
+      basket.addEventListener("drop", (evt) => {
+
+        evt.target.classList.remove('hover');
+        if (evt.dataTransfer.getData("title") != '') {
+          return false;
+        }
+        evt.preventDefault();
+        $.fancybox.open({
+          src: "#specifyMovie",
+          type: "inline",
+          smallBtn: false,
+          toolbar: false,
+        });
+
+        let seanceId = dragged.getAttribute("data-seance-id");
+
+        let draggedTitle = dragged.querySelector('.main-content-section-sessions-hall-net-movie');
+
+        let question = document.getElementById('cancelFilm');
+
+        question.innerHTML = "";
+
+        let draggedName = "";
+        draggedName += ` <div class="main-content-add-item-hall">
+          Вы действительно хотите снять с сеанса фильм "${draggedTitle.textContent}"?
+        </div>`
+        question.innerHTML = draggedName;
+
+        let delMovie = document.getElementById('MovieDel');
+        delMovie.addEventListener('click', e => {
+          e.preventDefault();
+
+          fetch("https://shfe-diplom.neto-server.ru/seance/" + seanceId, {
+            method: "DELETE",
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              // console.log(data);
+              if (data.success) {
+                dragged.closest(".main-content-section-sessions-item-prev").remove();
+              }
+            });
+          $.fancybox.close();
+          updateHall();
+          updateaddHalls();
+          openHall();
+        })
+
+        let cancelRemove = document.getElementById('cancelRemove');
+        cancelRemove.addEventListener("click", () => document.location.reload());
+      });
+    })
+  })
+}
+openHall(0, alldata);
+
+async function openHall(activeId = 0, data = []) {
+
+  if(data.length == 0) {
+    await fetch("https://shfe-diplom.neto-server.ru/alldata", {})
     .then((response) => response.json())
-    .then((data) => {
-      updateHall();
-      updateaddHalls();
+    .then((res) => {
+    data = res;
+     });
+  } 
+
+ // fetch("https://shfe-diplom.neto-server.ru/alldata", {})
+   // .then((response) => response.json())
+   // .then((data) => {
+      updateHall(data);
+      updateaddHalls(data);
       let allSeances = data.result.seances;
       let halls = data.result.halls;
       //console.log(halls);
@@ -801,8 +876,8 @@ function openHall(activeId = 0) {
       list.innerHTML = "";
       let activeClassBtn = '';
       let arrOpenHalls = [];
-      console.log(12);
-      data.result.halls.forEach((hall, i) => {
+     // console.log(12);
+     data.result.halls.forEach((hall, i) => {
         arrOpenHalls[hall.id] = hall.hall_open;
         if (i == activeId) {
           activeClassBtn = 'active';
@@ -839,7 +914,7 @@ function openHall(activeId = 0) {
           btn.classList.add("active");
         });
       });
-    });
+    //});
 }
 
 let openHallBtn = document.getElementById('openHall');
@@ -889,4 +964,5 @@ allBattons.forEach(button => {
     document.location.reload();
   })
 });
-
+})();
+});

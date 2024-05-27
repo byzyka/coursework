@@ -139,7 +139,7 @@ fetch('https://shfe-diplom.neto-server.ru/hallconfig?seanceId=' + parsedSeances.
       parsedSeances.tickets = allTickets;
       localStorage.setItem('seance-data', JSON.stringify(parsedSeances));
 
-      console.log(parsedSeances.tickets);
+     // console.log(parsedSeances.tickets);
 
       window.location.href = "../html/pay.html";
     });
